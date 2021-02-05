@@ -14,7 +14,6 @@ void Bitset::add(bool bit){
 
     if(bit){
 
-        std::cout << "set kth bit " << next_free_bit << std::endl;
         utils::set_kth_bit(bits[last_idx], next_free_bit);
     }
     
