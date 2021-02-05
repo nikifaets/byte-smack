@@ -20,6 +20,12 @@ HNodePtr::HNodePtr(HNode* node) : node(node) {}
 
 HNodePtr::HNodePtr() {}
 
+void HTree::create_code_table(CodeTable& code_table, std::vector<int> freq_table){
+
+    construct_tree(freq_table);
+    get_codes_from_tree(code_table);
+
+}
 void HTree::construct_tree(std::vector<int>& freq_table){
 
     std::priority_queue<HNodePtr, std::vector<HNodePtr>, std::greater<HNodePtr>> q;
@@ -33,9 +39,7 @@ void HTree::construct_tree(std::vector<int>& freq_table){
             *val = i;
             val[1] = '\0';
             
-            std::cout << "Creating queue; node with val " << val << " " << i << " count " << freq_table[i] << std::endl;
             q.push(HNodePtr(new HNode(freq_table[i], val)));
-            //q.push(new HNode(freq_table[i],  val));
         }
     }
 
@@ -50,8 +54,7 @@ void HTree::construct_tree(std::vector<int>& freq_table){
         HNode* top2 = *top2_ptr;
         int top1_count = (top1)->get_count();
         int top2_count = (top2)->get_count();
-        std::cout << "new left count " << top1_count << std::endl;
-        std::cout << "new right count " << top2_count << std::endl;
+
 
         HNodePtr merged = HNodePtr(new HNode(top1_count + top2_count, top1, top2));
 
@@ -87,11 +90,9 @@ void HTree::get_codes_from_tree(CodeTable& code_table){
 
     HNode* root = *(this->root);
     visit_write_code(root, code_table, 0, 0);
-    std::cout << "a code " << (int)code_table['a'].code << " len " << code_table['a'].length << std::endl;
-    std::cout << "b code " << (int)code_table['b'].code << " len " << code_table['b'].length << std::endl;
-    std::cout << "c code " << (int)code_table['c'].code << " len " << code_table['c'].length << std::endl;
 
 }
+
 void HTree::print_tree(HNode* root){
 
     if(root == nullptr) return;
