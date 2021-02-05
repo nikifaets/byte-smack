@@ -41,12 +41,7 @@ void Encoder::create_codes(){
     htree.create_code_table(this->code_table, freq_table);
 }  
 
-bool Encoder::get_kth_bit(char code, int k){
 
-    char leftmost_one = 0b10000000;
-
-    return (code & ( leftmost_one >> k )) >> k;
-}
 void Encoder::code_table_to_bitset(CodeTable& code_table){
 
     size_t bitset_len = 0;
@@ -55,7 +50,7 @@ void Encoder::code_table_to_bitset(CodeTable& code_table){
 
         if(freq_table[i] < 1) continue;
 
-        char orig = freq_table[i];
+        byte orig = freq_table[i];
 
         int len = code_table[orig].length;
         bitset_len += len;

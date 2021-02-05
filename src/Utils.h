@@ -4,13 +4,13 @@ namespace utils{
 
 
     template<typename T>
-    int num_bits(T var){
+    int num_bits(T& var){
 
         return sizeof(var)*8;
     }
 
     template<typename T>
-    T msb_for_type(T var){
+    T msb_for_type(T& var){
         
         var = 1;
         return var << (num_bits(var) - 1);

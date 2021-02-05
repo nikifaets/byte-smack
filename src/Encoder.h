@@ -5,8 +5,7 @@
 #include "HNode.h"
 #include "CodeTable.h"
 #include <bitset>
-typedef unsigned char uchar;
-
+#include "Global.h"
 class Encoder{
 
     static const int BYTES_COUNT = 256;
@@ -16,7 +15,7 @@ class Encoder{
     CodeTable code_table;
     void prefill_table();
     void code_table_to_bitset(CodeTable& code_table);
-    bool get_kth_bit(char code, int k);
+    bool get_kth_bit(byte code, int k);
     public:
 
     bool write_archive(std::string& buf, std::string& out);

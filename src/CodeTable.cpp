@@ -3,12 +3,12 @@
 
 
 
-char CodeTable::get_code(char& orig) const{
+byte CodeTable::get_code(byte& orig) const{
 
     return this->table.at(orig).code;
 }
 
-int CodeTable::get_code_len(char& orig) const{
+int CodeTable::get_code_len(byte& orig) const{
 
     return this->table.at(orig).length;
 }
@@ -18,7 +18,7 @@ CodeTable::CodeTable(){
     prefill_table();
 }
 
-CodeLengthPair::CodeLengthPair(char code, int length): code(code), length(length) {}
+CodeLengthPair::CodeLengthPair(byte code, int length): code(code), length(length) {}
 CodeLengthPair::CodeLengthPair(){}
 
 void CodeTable::prefill_table(){
@@ -30,7 +30,7 @@ void CodeTable::prefill_table(){
     }
 }
 
-code_len& CodeTable::operator [] (const char& key){
+code_len& CodeTable::operator [] (const byte& key){
 
     return table[key];
 }

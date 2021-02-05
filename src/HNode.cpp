@@ -12,10 +12,10 @@ bool HNode::operator < (HNode*& o){
 }
 
 HNode::HNode(int count) : count(count) {}
-HNode::HNode(int count, char* val) : count(count), val(val) {}
+HNode::HNode(int count, byte* val) : count(count), val(val) {}
 HNode::HNode(int count, HNode*& left, HNode*& right) : count(count), left(left), right(right) {}
 
-const char* HNode::get_value() const{
+const byte* HNode::get_value() const{
 
     return val;
 }

@@ -34,8 +34,8 @@ void HTree::construct_tree(std::vector<int>& freq_table){
 
         if(freq_table[i] > 0){
 
-            char val1 = i;
-            char* val = new char[2];
+            byte val1 = i;
+            byte* val = new byte[2];
             *val = i;
             val[1] = '\0';
             
@@ -66,7 +66,7 @@ void HTree::construct_tree(std::vector<int>& freq_table){
     print_tree(*(this->root));
 }
 
-void HTree::visit_write_code(HNode*& node, CodeTable& code_table, char code, int code_len){
+void HTree::visit_write_code(HNode*& node, CodeTable& code_table, byte code, int code_len){
 
     if(node == nullptr) return;
     if(node->right == nullptr && node->left == nullptr){
@@ -76,11 +76,11 @@ void HTree::visit_write_code(HNode*& node, CodeTable& code_table, char code, int
     }
 
 
-    char leftmost_one = 0b10000000;
-    char next_code_left = (code | ( leftmost_one >> code_len));
+    byte leftmost_one = 0b10000000;
+    byte next_code_left = (code | ( leftmost_one >> code_len));
     code_len++;
     
-    char next_code_right = code;
+    byte next_code_right = code;
 
     visit_write_code(node->left, code_table, next_code_left, code_len);
     visit_write_code(node->right, code_table, next_code_right, code_len);

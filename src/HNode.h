@@ -1,4 +1,6 @@
 #pragma once
+
+#include "Global.h"
 class HNode{
 
 
@@ -7,13 +9,13 @@ class HNode{
 
     HNode* left = nullptr;
     HNode* right = nullptr;
-    char* val =  nullptr;
+    byte* val =  nullptr;
     int count;
     HNode(int count);
-    HNode(int count, char* val);
+    HNode(int count, byte* val);
     HNode(int count, HNode*& left, HNode*& right);
     
-    const char* get_value() const;
+    const byte* get_value() const;
     int get_count() const;
 
     bool operator < (const HNode*& o);

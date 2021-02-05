@@ -1,13 +1,15 @@
 #pragma once
 
 #include <unordered_map>
+#include "Global.h"
+
 struct CodeLengthPair{
 
-    char code;
+    byte code;
     int length;
 
     CodeLengthPair();
-    CodeLengthPair(char code, int length);
+    CodeLengthPair(byte code, int length);
 
 };
 
@@ -17,15 +19,15 @@ class CodeTable{
 
 
 
-    std::unordered_map<char, code_len> table;
+    std::unordered_map<byte, code_len> table;
     void prefill_table();
 
     public:
 
     CodeTable();
-    char get_code(char& orig) const;
-    int get_code_len(char& orig) const;
+    byte get_code(byte& orig) const;
+    int get_code_len(byte& orig) const;
 
-    code_len& operator [] (const char& key);
+    code_len& operator [] (const byte& key);
 
 };
