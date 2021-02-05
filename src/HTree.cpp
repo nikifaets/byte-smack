@@ -34,10 +34,8 @@ void HTree::construct_tree(std::vector<int>& freq_table){
 
         if(freq_table[i] > 0){
 
-            byte val1 = i;
-            byte* val = new byte[2];
+            byte* val = new byte;
             *val = i;
-            val[1] = '\0';
             
             q.push(HNodePtr(new HNode(freq_table[i], val)));
         }
@@ -98,7 +96,7 @@ void HTree::print_tree(HNode* root){
     if(root == nullptr) return;
     std::cout << "Node:" << std::endl;
     std::cout << "Count: " << root->get_count() << " ";
-    if(root->get_value() != nullptr) std::cout << "Val: " << root->get_value() << std::endl;
+    if(root->get_value() != nullptr) std::cout << "Val: " << *root->get_value() << std::endl;
     if(root->left) std::cout << "Left: " << root->left->count << " ";
     if(root->right) std::cout << "Right: " << root->right->count << std::endl;
     print_tree(root->left);

@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 namespace utils{
 
@@ -20,9 +21,10 @@ namespace utils{
     bool get_kth_bit(T& code, int k){
 
         T msb = msb_for_type(code);
-        int left_shift = num_bits(code) - k;
+        int left_shift = num_bits(code) - k - 1;
 
-        return ((code >> left_shift) & 1);
+        //std::cout << "left shift " << left_shift << std::endl;
+        return ((code >> k) & (unsigned long long)1);
     }
 
     template <typename T>

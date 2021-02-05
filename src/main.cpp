@@ -27,7 +27,7 @@ template<typename T>
 void print_bits(T val){
 
     int bits = sizeof(T) * 8;
-    for(int i=bits-1; i>=0; i--){
+    for(int i=0; i<bits; i++){
 
         cout << ((val >> i) & 1);
     }
@@ -54,7 +54,6 @@ int main(){
     cout << "start " << (int)start_val << endl; 
 
     Bitset bitset;
-    unsigned long long hui = 0;
     for(int i=0; i<64; i++){
 
         bitset.add(0);
@@ -63,5 +62,11 @@ int main(){
 
     cout << endl;
     cout << (string)bitset << endl;
+
+    unsigned long long hui = -2;
+    cout << "hui " << hui << endl;
+    cout << utils::get_kth_bit(hui, 1) << endl;
+    //utils::set_kth_bit(hui, 5);
+    print_bits(hui);
     return 0;
 }
