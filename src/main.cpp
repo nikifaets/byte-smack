@@ -24,7 +24,7 @@ void read_test(string filename){
 int main(){
 
 
-    string s = "aaaabbbccd";
+    string s = "ccaaaabbb";
     Encoder enc;
 
     cout << "before update" << endl;
@@ -37,6 +37,11 @@ int main(){
     HTree htree;
     htree.construct_tree(freq);
 
+    CodeTable code_table;
 
+    htree.get_codes_from_tree(code_table);
+
+    char start_val = 0b01000000;
+    cout << "start " << (int)start_val << endl; 
     return 0;
 }

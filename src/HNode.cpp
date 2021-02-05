@@ -1,6 +1,12 @@
 #include "HNode.h"
+#include <iostream>
 
 bool HNode::operator < (const HNode*& o){
+
+    return this->count < o->count;
+}
+
+bool HNode::operator < (HNode*& o){
 
     return this->count < o->count;
 }

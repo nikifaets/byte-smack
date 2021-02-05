@@ -5,8 +5,8 @@ class HNode{
 
     public:
 
-    HNode* left;
-    HNode* right;
+    HNode* left = nullptr;
+    HNode* right = nullptr;
     char* val =  nullptr;
     int count;
     HNode(int count);
@@ -17,6 +17,8 @@ class HNode{
     int get_count() const;
 
     bool operator < (const HNode*& o);
+    bool operator < (HNode*& o);
 
 
 };
+
