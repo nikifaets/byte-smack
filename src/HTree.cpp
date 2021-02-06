@@ -69,8 +69,8 @@ void HTree::visit_write_code(HNode*& node, CodeTable& code_table, byte code, int
     if(node == nullptr) return;
     if(node->right == nullptr && node->left == nullptr){
 
-        CodeLengthPair cl(code, code_len);
-        code_table[*node->val] = cl;
+        Bitset bitset(code, code_len);
+        code_table[*node->val] = bitset;
     }
 
 

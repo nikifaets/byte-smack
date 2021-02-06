@@ -39,47 +39,60 @@ void print_bits2(T val){
 }
 int main(){
 
+    Bitset b;
+    b.reserve(8);
+    b[0] = 1;
+    b[7] = 1;
+    cout << (string) b << endl;
 
-    string s = "ccaaaabbb";
+    byte t = b;
+    utils::print_bits(t);
+
+    vector<byte> inp;
+    string s = "aaaasdgfdgfdfgfdgfdgfdgfdfdgfdgfdgfdgfddgfdggfdgdafgfadhgjutyiuyjbfdsghfgdhfg5453thjpoesdfsdsdsffdabababaccc";
+    
+    for(int i=0; i<s.size(); i++){
+
+        inp.push_back(s[i]);
+    }
+
     Encoder enc;
 
-    enc.update_table(s);
-    std::vector<int> freq(500);
-    enc.get_table(freq);
-
-
-
-    CodeTable code_table;
-
+    enc.update_freq_table(inp);
     enc.create_codes();
+    CodeTable codes;
+    enc.codes(codes);
 
+    cout << "a: " << (string)codes['a'] << endl;
+    cout << "b: " << (string) codes['b'] << endl;
+    cout << "c: " << (string) codes['c'] << endl;
 
-    char start_val = 0b01000000;
-    cout << "start " << (int)start_val << endl; 
+    cout << "a len " << codes['a'].next_free_bit << endl;
+    cout << "b len " << codes['b'].next_free_bit << endl;
+    cout << "c len " << codes['c'].next_free_bit << endl;
+    Bitset ab = codes['a'] + codes['b'];
+    ab += codes['c'];
 
-    Bitset b1;
-    Bitset b2;
+    Bitset res;
 
-    b1.reserve(64);
-    for(int i=0; i<60; i++){
+    enc.encode(res, inp);
 
-        b1.add(1);
+    cout << (string) res << endl;
+
+    vector<byte> decoded;
+    enc.decode(decoded, res);
+    cout << "encoded " << s << endl;
+
+    cout << "decoded ";
+    for(int i=0; i<decoded.size(); i++){
+
+        cout << decoded[i];
+        
 
     }
-
-    for(int i=0; i<64; i++){
-
-        b2.add(1);
-    }
-
-    cout << (string)b1 << endl;
-    cout << (string)b2 << endl;
-
-    b1 += b2;
-
-    cout << "----------------------------------------------------------" << endl;
-    cout << (string)b1 << endl;
-    cout << (string)b2 << endl;
+    cout << endl;
+    //cout << (string) compressed << endl;
 
     return 0;
+
 }

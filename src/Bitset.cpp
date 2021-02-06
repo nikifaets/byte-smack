@@ -23,12 +23,31 @@ BitReference& BitReference::operator=(const bool val){
     
 }
 
+bool BitReference::operator!= (const BitReference& o)const{
+
+    return !(*this == o);
+    
+}
+
 unsigned long long& BitReference::long_val(){
 
     return l;
 }
 
+
 Bitset::Bitset() {}
+
+
+Bitset::Bitset(byte code, int len){
+
+    assert(len < 8);
+
+    for(int i=0; i<len; i++){
+
+        add(utils::get_kth_bit(code, i));
+    }
+    
+}
 
 void Bitset::add(bool bit){
 
@@ -73,6 +92,7 @@ Bitset::operator std::string(){
 
         for(int bit_idx=0; bit_idx<LL_BITS; bit_idx++){
 
+            if(i * LL_BITS + bit_idx >= next_free_bit) break;
             std::string curr_bit = std::to_string((int)utils::get_kth_bit(bits[i], bit_idx));
             res += curr_bit;
         }
@@ -80,22 +100,30 @@ Bitset::operator std::string(){
     return res;
 }
 
+Bitset::operator byte() const{
+
+    return  bits[0] >> 56;
+}
+
 Bitset& Bitset::operator= (Bitset& o){
 
     this->bits = o.bits;
+    this->next_free_bit = o.next_free_bit;
     return *this;
 }
 
+
+
 Bitset& Bitset::operator+ (Bitset& o){
 
-    if(next_free_bit == 0){
+    if(next_free_bit % LL_BITS == 0){
 
         for(int i=0; i<o.bits.size(); i++){
 
             bits.push_back(o.bits[i]);
         }
-    }
 
+    }
 
     else{
         
@@ -108,10 +136,12 @@ Bitset& Bitset::operator+ (Bitset& o){
 
             utils::merge(last_long, next_long, non_empty_space);
 
-            bits.push_back(next_long);
+            if(o.next_free_bit > LL_BITS - non_empty_space) bits.push_back(next_long);
         }
         
     }
+
+    next_free_bit += o.next_free_bit;
 
     return *this;
 }
@@ -130,6 +160,35 @@ BitReference Bitset::operator[] (int idx){
     int long_idx = idx / LL_BITS;
     int bit_idx = idx % LL_BITS ;
 
-
+    if(idx > next_free_bit) next_free_bit = idx + 1;
     return BitReference(bits[long_idx], bit_idx);
+}
+
+bool Bitset::operator== (Bitset& o) const{
+
+    if(o.size() != next_free_bit) return false;
+    for(int i=0; i<next_free_bit; i++){
+
+        int long_idx = i / LL_BITS;
+        int bit_idx = i % LL_BITS;
+
+        if(utils::get_kth_bit(bits[long_idx], bit_idx) != o[i]) return false;
+
+    }
+    return false;
+}
+
+int Bitset::size() const{
+
+    return next_free_bit;
+}
+
+std::size_t BitsetHash::operator() (const Bitset& b) const {
+
+    std::hash<unsigned short> us_hash;
+
+    unsigned short first_byte = (byte)b;
+    unsigned short second_byte = b.size() << 8;
+
+    return us_hash(first_byte | second_byte);
 }

@@ -3,7 +3,6 @@
 #include "HNode.h"
 #include <string>
 #include <vector>
-#include "CodeTable.h"
 #include "Global.h"
 
 struct HNodePtr{
