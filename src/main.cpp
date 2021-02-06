@@ -60,13 +60,14 @@ int main(){
     Bitset b1;
     Bitset b2;
 
+    b1.reserve(64);
     for(int i=0; i<60; i++){
 
         b1.add(1);
 
     }
 
-    for(int i=0; i<250; i++){
+    for(int i=0; i<64; i++){
 
         b2.add(1);
     }

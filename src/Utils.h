@@ -47,10 +47,10 @@ namespace utils{
     }
 
     template <typename T>
-    void merge(T& bitset1, T& bitset2, int empty_space){
+    void merge(T& code1, T& code2, int non_empty_space){
 
-        bitset1 |= (bitset2 >> empty_space);
-        bitset2 = bitset2 << empty_space;
+        code1 |= (code2 >> non_empty_space);
+        code2 = code2 << (num_bits(code2)-non_empty_space);
     }
 
     template<typename T>

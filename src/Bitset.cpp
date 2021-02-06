@@ -32,17 +32,16 @@ Bitset::Bitset() {}
 
 void Bitset::add(bool bit){
 
-    if(next_free_bit % LL_BITS == 0){
+    if(next_free_bit % LL_BITS == 0 && next_free_bit >= bits.size() * LL_BITS){
 
         bits.push_back(0);
-        next_free_bit = 0;
     }
 
-    int last_idx = bits.size() - 1;
+    int last_long = next_free_bit / (LL_BITS);
 
     if(bit){
 
-        utils::set_kth_bit(bits[last_idx], next_free_bit);
+        utils::set_kth_bit(bits[last_long], next_free_bit);
     }
     
     next_free_bit ++;
@@ -50,15 +49,20 @@ void Bitset::add(bool bit){
 
 void Bitset::reserve(int len){
 
-    int new_longs = (len / LL_BITS) + 1;
+    assert(len > bits.size() * LL_BITS);
+
+    int already_allocated = bits.size() * LL_BITS;
+
+    int new_longs = ((len - already_allocated) / LL_BITS);
+    if (len % LL_BITS) new_longs ++;
 
     for(int i=0; i<new_longs; i++){
 
         bits.push_back(0);
     }
 
-    next_free_bit += len;
-    next_free_bit %= LL_BITS;
+
+
 }
 
 Bitset::operator std::string(){
@@ -81,6 +85,7 @@ Bitset& Bitset::operator= (Bitset& o){
     this->bits = o.bits;
     return *this;
 }
+
 Bitset& Bitset::operator+ (Bitset& o){
 
     if(next_free_bit == 0){
@@ -95,20 +100,22 @@ Bitset& Bitset::operator+ (Bitset& o){
     else{
         
 
-        int non_empty_space = next_free_bit;
+        int non_empty_space = next_free_bit % LL_BITS;
         for(int i=0; i<o.bits.size(); i++){
             
             unsigned long long& last_long = bits[bits.size()-1];
-            utils::merge(last_long, o.bits[i], non_empty_space);
-            non_empty_space = LL_BITS - non_empty_space;
-            bits.push_back(o.bits[i]);
+            unsigned long long next_long = o.bits[i];
+
+            utils::merge(last_long, next_long, non_empty_space);
+
+            bits.push_back(next_long);
         }
         
-
     }
 
     return *this;
 }
+
 
 Bitset& Bitset::operator+= (Bitset& o){
 
@@ -118,7 +125,7 @@ Bitset& Bitset::operator+= (Bitset& o){
 
 BitReference Bitset::operator[] (int idx){
 
-    assert(idx < bits.size() * LL_BITS + next_free_bit);
+    assert(idx < bits.size() * LL_BITS);
 
     int long_idx = idx / LL_BITS;
     int bit_idx = idx % LL_BITS ;
