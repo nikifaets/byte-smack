@@ -32,4 +32,36 @@ namespace utils{
         T msb = msb_for_type(code);
         code = code | (msb >> k);
     }
+
+    template <typename T>
+    void clear_kth_bit(T& code, int k){
+
+        
+        code &= ~(1ull << (num_bits(code) - k - 1));
+    }
+
+    template <typename T>
+    void toggle_kth_bit(T& code, int k){
+
+        code ^= (1ull << (num_bits(code) - k - 1));
+    }
+
+    template <typename T>
+    void merge(T& bitset1, T& bitset2, int empty_space){
+
+        bitset1 |= (bitset2 >> empty_space);
+        bitset2 = bitset2 << empty_space;
+    }
+
+    template<typename T>
+    void print_bits(T val){
+
+        int bits = sizeof(T) * 8;
+        for(int i=0; i<bits; i++){
+
+            std::cout << utils::get_kth_bit(val, i);
+        }
+        std::cout << std::endl;
+    }
 }
+

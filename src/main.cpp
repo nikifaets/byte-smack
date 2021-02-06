@@ -9,6 +9,7 @@
 #include "Bitset.h"
 #include "Utils.h"
 
+
 using namespace std;
 
 void read_test(string filename){
@@ -23,16 +24,7 @@ void read_test(string filename){
 
 }
 
-template<typename T>
-void print_bits(T val){
 
-    int bits = sizeof(T) * 8;
-    for(int i=0; i<bits; i++){
-
-        cout << utils::get_kth_bit(val, i);
-    }
-    cout << endl;
-}
 
 template <typename T>
 void print_bits2(T val){
@@ -65,15 +57,28 @@ int main(){
     char start_val = 0b01000000;
     cout << "start " << (int)start_val << endl; 
 
-    Bitset bitset;
-    for(int i=0; i<64; i++){
+    Bitset b1;
+    Bitset b2;
 
-        bitset.add(0);
-        bitset.add(1);
+    for(int i=0; i<60; i++){
+
+        b1.add(1);
+
     }
 
-    cout << endl;
-    cout << (string)bitset << endl;
+    for(int i=0; i<250; i++){
+
+        b2.add(1);
+    }
+
+    cout << (string)b1 << endl;
+    cout << (string)b2 << endl;
+
+    b1 += b2;
+
+    cout << "----------------------------------------------------------" << endl;
+    cout << (string)b1 << endl;
+    cout << (string)b2 << endl;
 
     return 0;
 }
