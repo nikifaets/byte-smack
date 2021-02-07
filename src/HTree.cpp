@@ -61,33 +61,35 @@ void HTree::construct_tree(std::vector<int>& freq_table){
 
     this->root = q.top();
 
-    print_tree(*(this->root));
 }
 
-void HTree::visit_write_code(HNode*& node, CodeTable& code_table, byte code, int code_len){
+void HTree::visit_write_code(HNode*& node, CodeTable& code_table, Bitset code, int code_len){
 
     if(node == nullptr) return;
     if(node->right == nullptr && node->left == nullptr){
 
-        Bitset bitset(code, code_len);
-        code_table[*node->val] = bitset;
+        std::cout << "Node name " << *node->val << " code len " << code.size() << std::endl;
+        
+        std::cout << "Code: " << (std::string)code << std::endl;
+        code_table[*node->val] = code;
     }
 
 
-    byte leftmost_one = 0b10000000;
-    byte next_code_left = (code | ( leftmost_one >> code_len));
-    code_len++;
-    
-    byte next_code_right = code;
+    Bitset left = code;
+    left.add(1);
 
-    visit_write_code(node->left, code_table, next_code_left, code_len);
-    visit_write_code(node->right, code_table, next_code_right, code_len);
+    Bitset right = code;
+    right.add(0);
+
+    visit_write_code(node->left, code_table, left, code_len);
+    visit_write_code(node->right, code_table, right, code_len);
 
 }
 void HTree::get_codes_from_tree(CodeTable& code_table){
 
     HNode* root = *(this->root);
-    visit_write_code(root, code_table, 0, 0);
+    Bitset start;
+    visit_write_code(root, code_table, start, 0);
 
 }
 

@@ -20,7 +20,7 @@ class HTree{
 
     HNodePtr root;
 
-    void visit_write_code(HNode*& node, CodeTable& code_table, byte code, int code_len);
+    void visit_write_code(HNode*& node, CodeTable& code_table, Bitset code, int code_len);
     public:
 
     void construct_tree(std::vector<int>& freq_table);

@@ -29,5 +29,6 @@ class Encoder{
     void codes(CodeTable& res) const;
     void encode(Bitset& res, std::vector<byte> bytes);
     void decode(std::vector<byte>& res, Bitset& codes);
+    int count_different_symbols();
     Encoder();
 };

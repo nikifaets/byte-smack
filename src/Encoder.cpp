@@ -21,10 +21,21 @@ void Encoder::get_freq_table(std::vector<int>& out){
 
     for(int i=0; i<BYTES_COUNT; i++){
 
+        std::cout << i << " " << freq_table[i] << std::endl;
         out[i] = freq_table[i];
     }
 }
 
+int Encoder::count_different_symbols(){
+
+    int count = 0;
+    for(int i=0; i<freq_table.size(); i++){
+
+        if(freq_table[i] > 0) count ++;
+    }
+
+    return count;
+}
 void Encoder::update_freq_table(std::vector<byte> bytes){
 
 
@@ -71,23 +82,23 @@ void Encoder::encode(Bitset& res, std::vector<byte> bytes){
 void Encoder::decode(std::vector<byte>& res, Bitset& codes){
 
     int codes_len = codes.size();
-    byte reader = 0;
+    Bitset reader;
     int num_bits = 0;
     
     for(int i=0; i<codes_len; i++){
 
-        assert(num_bits < 9);
+        assert(num_bits <= MAX_CODE_LEN);
 
-        reader |= ((codes[i] << (7-num_bits)));
+        reader.add(codes[i]);
+        num_bits++;
 
-        num_bits ++;
+        //std::cout <<(std::string) reader << std::endl;
+        if(decode_table.count(reader) > 0){
 
-        Bitset bitset(reader, num_bits);
-
-        if(decode_table.count(bitset) > 0){
-
-            res.push_back(decode_table[bitset]);
-            reader = 0;
+            res.push_back(decode_table[reader]);
+            
+            Bitset new_reader;
+            reader = new_reader;
             num_bits = 0;
         }
         

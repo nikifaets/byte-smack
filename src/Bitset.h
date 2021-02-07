@@ -39,7 +39,7 @@ class Bitset{
 
     void add(bool bit);
     void reserve(int len);
-    operator std::string();
+    operator std::string() const;
     operator byte() const;
     Bitset& operator+ (Bitset& o);
     Bitset& operator= (Bitset& o);
@@ -48,6 +48,7 @@ class Bitset{
     BitReference operator [] (int idx);
     bool operator== (Bitset& o) const;
     int size() const;
+    const std::vector<unsigned long long>& longs() const;
 
 
 

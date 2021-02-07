@@ -40,7 +40,9 @@ Bitset::Bitset() {}
 
 Bitset::Bitset(byte code, int len){
 
-    assert(len < 8);
+    const int MAX_CODE_LEN = 255;
+
+    assert(len < MAX_CODE_LEN);
 
     for(int i=0; i<len; i++){
 
@@ -84,7 +86,7 @@ void Bitset::reserve(int len){
 
 }
 
-Bitset::operator std::string(){
+Bitset::operator std::string() const{
 
     std::string res;
 
@@ -113,6 +115,10 @@ Bitset& Bitset::operator= (Bitset& o){
 }
 
 
+const std::vector<unsigned long long>& Bitset::longs() const {
+
+    return bits;
+}
 
 Bitset& Bitset::operator+ (Bitset& o){
 
@@ -185,10 +191,9 @@ int Bitset::size() const{
 
 std::size_t BitsetHash::operator() (const Bitset& b) const {
 
-    std::hash<unsigned short> us_hash;
+    std::hash<std::string> str_hash;
 
-    unsigned short first_byte = (byte)b;
-    unsigned short second_byte = b.size() << 8;
+    
 
-    return us_hash(first_byte | second_byte);
+    return str_hash(b);
 }
