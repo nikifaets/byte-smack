@@ -63,5 +63,28 @@ namespace utils{
         }
         std::cout << std::endl;
     }
+
+    template<typename T>
+    void to_char_array(T val, char*& res, int len){
+
+        for(int i=0; i<len; i++){
+
+            res[i] = val >> (len*8 - 8*i - 8);
+
+        }
+    }
+
+    template<typename T>
+    void from_char_array(T& val, char*& chars){
+        
+        val = (T)0;
+        int num_bytes = sizeof(val);
+
+        for(int i=0; i<num_bytes; i++){
+
+            val |= ((T)chars[num_bytes-i-1] << 8*i);
+            
+        }
+    }
 }
 

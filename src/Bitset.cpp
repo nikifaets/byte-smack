@@ -38,19 +38,6 @@ unsigned long long& BitReference::long_val(){
 Bitset::Bitset() {}
 
 
-Bitset::Bitset(byte code, int len){
-
-    const int MAX_CODE_LEN = 255;
-
-    assert(len < MAX_CODE_LEN);
-
-    for(int i=0; i<len; i++){
-
-        add(utils::get_kth_bit(code, i));
-    }
-    
-}
-
 void Bitset::add(bool bit){
 
     if(next_free_bit % LL_BITS == 0 && next_free_bit >= bits.size() * LL_BITS){
@@ -86,6 +73,11 @@ void Bitset::reserve(int len){
 
 }
 
+void Bitset::clear(){
+
+    bits.clear();
+
+}
 Bitset::operator std::string() const{
 
     std::string res;
@@ -184,7 +176,7 @@ bool Bitset::operator== (Bitset& o) const{
     return false;
 }
 
-int Bitset::size() const{
+int Bitset::size(){
 
     return next_free_bit;
 }
@@ -192,8 +184,6 @@ int Bitset::size() const{
 std::size_t BitsetHash::operator() (const Bitset& b) const {
 
     std::hash<std::string> str_hash;
-
-    
 
     return str_hash(b);
 }

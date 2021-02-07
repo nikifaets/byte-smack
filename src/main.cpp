@@ -8,21 +8,9 @@
 #include "Encoder.h"
 #include "Bitset.h"
 #include "Utils.h"
+#include "FileReader.h"
+#include "Archiver.h"
 
-
-using namespace std;
-
-void read_test(string filename){
-
-    ifstream inp(filename, ios::binary);
-
-    char f;
-    while(inp.get(f)){
-
-        cout << (int)f << endl;
-    }
-
-}
 
 int sum(int v){
 
@@ -35,85 +23,21 @@ int sum(int v){
     return res;
 }
 
-template <typename T>
-void print_bits2(T val){
-
-    while(val){
-
-        cout << val%2;
-        val /= 2;
-    }
-
-    cout << endl;
-}
 int main(){
 
-    Bitset b;
-    b.reserve(8);
-    b[0] = 1;
-    b[7] = 1;
-    cout << (string) b << endl;
+    std::vector<byte> inp;
 
-    byte t = b;
-    utils::print_bits(t);
+    Archiver archiver;
 
-    vector<byte> inp;
-    string s = "1234567890-=!@#$%^&*()_+qwertyuiop[]QWERTYUIOP{}asdfghjkl;'ASDFGHJKL:\"zxcvbnm,./ZXCVBNM<>?";
+    std::string arch_name = "hhh";
+    std::string fname = "../test/test_text";
+    std::vector<std::string> files = {fname};
+    std::string out_dir = "out";
+
+    archiver.compress(arch_name, files);
+    archiver.decompress(arch_name, out_dir);
     
-    for(int i=40; i<190; i++){
-
-        int summ = sum(i);
-        
-        for(int j=0; j<summ+5; j++){
-
-            inp.push_back(i);
-        }
-    }
-
-    Encoder enc;
-
-    enc.update_freq_table(inp);
-    cout << "different symbols " << enc.count_different_symbols() << endl;
-    enc.create_codes();
-    CodeTable codes;
-    enc.codes(codes);
-
-    cout << "a: " << (string)codes['a'] << endl;
-    cout << "2: " << (string) codes['2'] << endl;
-    cout << "c: " << (string) codes['c'] << endl;
-
-    cout << "a len " << codes['a'].next_free_bit << endl;
-    cout << "b len " << codes['b'].next_free_bit << endl;
-    cout << "c len " << codes['c'].next_free_bit << endl;
-    Bitset ab = codes['a'] + codes['b'];
-    ab += codes['c'];
-
-    Bitset res;
-
-    cout << "SUM 190 " << sum(190) << endl;
-    enc.encode(res, inp);
-
-    //cout << (string) res << endl;
-
-    vector<byte> decoded;
-    enc.decode(decoded, res);
-    cout << "encoded " << s << endl;
-
-    cout << "decoded ";
-
-    
-    cout << decoded.size() << " " <<inp.size() << endl;
-    for(int i=0; i<decoded.size(); i++){
-
-        assert(decoded[i] == inp[i]);
-
-        //cout << decoded[i];
-        
-
-    }
-    cout << endl;
-    //cout << (string) compressed << endl;
-
     return 0;
+
 
 }
