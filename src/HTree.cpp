@@ -22,7 +22,6 @@ HNodePtr::HNodePtr() {}
 
 void HTree::create_code_table(CodeTable& code_table, std::vector<int> freq_table, Bitset& special){
 
-    
     construct_tree(freq_table);
     get_codes_from_tree(code_table, special);
 
@@ -67,9 +66,7 @@ void HTree::visit_write_code(HNode*& node, CodeTable& code_table, Bitset code, i
     if(node == nullptr) return;
     if(node->right == nullptr && node->left == nullptr){
 
-        //std::cout << "Node name " << *node->val << " code len " << code.size() << std::endl;
         
-        //std::cout << "Code: " << (std::string)code << std::endl;
         code_table[*node->val] = code;
     }
 

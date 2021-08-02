@@ -23,7 +23,7 @@ BitReference& BitReference::operator=(const bool val){
     
 }
 
-bool BitReference::operator!= (const BitReference& o)const{
+bool BitReference::operator != (const BitReference& o)const{
 
     return !(*this == o);
     
@@ -81,11 +81,12 @@ void Bitset::clear(){
 Bitset::operator std::string() const{
 
     std::string res;
-
+    std::cout << "bits size " << bits.size() << std::endl;
     for(int i=0; i<bits.size(); i++){
 
         for(int bit_idx=0; bit_idx<LL_BITS; bit_idx++){
-
+            
+            std::cout << "loop operator string" << std::endl;
             if(i * LL_BITS + bit_idx >= next_free_bit) break;
             std::string curr_bit = std::to_string((int)utils::get_kth_bit(bits[i], bit_idx));
             res += curr_bit;
@@ -99,7 +100,7 @@ Bitset::operator byte() const{
     return  bits[0] >> 56;
 }
 
-Bitset& Bitset::operator= (Bitset& o){
+Bitset& Bitset::operator = (Bitset& o){
 
     this->bits = o.bits;
     this->next_free_bit = o.next_free_bit;
@@ -112,7 +113,7 @@ const std::vector<unsigned long long>& Bitset::longs() const {
     return bits;
 }
 
-Bitset& Bitset::operator+ (Bitset& o){
+Bitset& Bitset::operator + (Bitset& o){
 
     if(next_free_bit % LL_BITS == 0){
 

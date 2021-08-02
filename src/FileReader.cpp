@@ -1,5 +1,6 @@
 #include "FileReader.h"
 #include <assert.h>
+#include "Utils.h"
 #include <iostream>
 
 bool FileReader::validate_file(std::ifstream& f){
@@ -16,14 +17,13 @@ bool FileReader::read_byte_sequence(std::ifstream& file, std::vector<byte>& res,
 
     while(file.good() && file.get(inp) && bytes_read < num_bytes){
         
-        //std::cout << "read sequence " << bytes_read << std::endl;
+        //std::cout << " loop " << std::endl;
         bytes_read ++;
         res.push_back(inp);
         
     }
 
     //assert(!file.eof());
-    std::cout << "end of read seq" << std::endl;
     return !file.eof();
     
 }
@@ -36,7 +36,8 @@ bool FileReader::read_code_table(std::ifstream& archive, CodeTable& code_table, 
     //assert(false);
 
     read_code(archive, special);
-    
+    std::cout << "Special: \n";
+    std::cout << special << std::endl;
 
     int table_len;
     read_bytes(table_len, archive);
@@ -50,7 +51,6 @@ bool FileReader::read_code_table(std::ifstream& archive, CodeTable& code_table, 
         Bitset code;
         read_code(archive, code);
 
-        std::cout << "symbol " << symbol << " " << (std::string) code << std::endl;
         code_table[symbol] = code;
 
         //assert(i < 100);
@@ -64,7 +64,7 @@ bool FileReader::read_code(std::ifstream& archive, Bitset& res){
 
     int code_bits;
     read_bytes(code_bits, archive);
-
+    std::cout << "code bits " << code_bits << std::endl;
     int longs_num = code_bits / LL_BITS;
     if(code_bits % LL_BITS) longs_num ++;
 
@@ -101,9 +101,7 @@ bool FileReader::read_and_decode(std::ifstream& archive, std::vector<byte>& res,
 
     while(read_bytes(inp, archive) && decoded_bytes <= num_bytes && !end_archive){
 
-        //std::cout << "decode table size " << decode_table.size() << std::endl;
         Bitset inp_bitset(inp, sizeof(byte)*8);
-        //std::cout << "buf " << (std::string) code_buf << std::endl;
         for(int bit=0; bit<inp_bitset.size(); bit++){
 
             code_buf.add(inp_bitset[bit]);
@@ -111,9 +109,7 @@ bool FileReader::read_and_decode(std::ifstream& archive, std::vector<byte>& res,
             int count = decode_table.count(code_buf);
             if(count > 0){
 
-                std::cout << "got one " << std::endl;
                 decoded_bytes ++;
-                std::cout << decode_table[code_buf] << std::endl;
                 res.push_back(decode_table[code_buf]);
                 Bitset new_bitset;
                 code_buf = new_bitset;
@@ -123,6 +119,13 @@ bool FileReader::read_and_decode(std::ifstream& archive, std::vector<byte>& res,
 
                 
                 end_archive = true;
+            }
+
+            else{
+
+                utils::print_bits(inp);
+                std::cout  << " CHARACTER NOT IN DECODE TABLE \n";
+                assert(false); 
             }
         }
 

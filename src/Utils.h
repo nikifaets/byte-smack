@@ -36,7 +36,6 @@ namespace utils{
     template <typename T>
     void clear_kth_bit(T& code, int k){
 
-        
         code &= ~(1ull << (num_bits(code) - k - 1));
     }
 

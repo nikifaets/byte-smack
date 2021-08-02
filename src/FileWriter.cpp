@@ -19,7 +19,6 @@ void FileWriter::append_archive(std::ofstream& archive, Bitset& bitset, bool las
 
         unsigned long long last_long = longs[longs.size()-1];
         
-        std::cout << "append to archive last long " << std::endl;
         utils::print_bits(last_long);
         write_bytes(last_long, archive);
     }
@@ -27,7 +26,6 @@ void FileWriter::append_archive(std::ofstream& archive, Bitset& bitset, bool las
 
 void FileWriter::append_bytes(std::ofstream& f, std::vector<byte>& bytes){
 
-    std::cout << "append bytes len " << bytes.size() << std::endl;
     for(int i=0; i<bytes.size(); i++){
 
         write_bytes(bytes[i], f);
@@ -46,7 +44,6 @@ void FileWriter::write_file(std::ofstream& archive, std::ifstream& f, Encoder& e
     std::vector<byte> bytes;
 
     bool success = false;
-    std::cout << "write file " << std::endl;
     
     do{
 
@@ -54,7 +51,6 @@ void FileWriter::write_file(std::ofstream& archive, std::ifstream& f, Encoder& e
         Bitset encoded;
         encoder.encode(encoded, bytes);
 
-        std::cout << "encoded size " << encoded.size() << std::endl;
         append_archive(archive, encoded);
         bytes.clear();
 
@@ -83,10 +79,13 @@ void FileWriter::write_code_table(std::ofstream& archive, CodeTable& code_table,
         byte symbol = it->first;
         Bitset& code = it->second;
 
+        std::cout << "write symbol: \n";
         write_bytes(symbol, archive);
 
         int code_size = code.size();
+        std::cout << "write code size: \n";
         write_bytes(code_size, archive);
+        std::cout << "append code: \n";
         append_archive(archive, code);
     }
 

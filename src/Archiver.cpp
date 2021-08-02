@@ -7,13 +7,13 @@
 
 void Archiver::compress(std::string& archive_name, std::vector<std::string>& files){
 
-
     FileWriter writer;
     FileReader reader;
-    std::ifstream f;
-    for(int i=0; i<files.size(); i++){
 
-        std::string& file = files[i];
+    std::ifstream f;
+    for(const std::string& file : files){
+
+        std::cout << "file " << file << std::endl;
 
         f.open(file);
         assert(f.good());
@@ -27,16 +27,15 @@ void Archiver::compress(std::string& archive_name, std::vector<std::string>& fil
             bytes.clear();
         }
         f.close();
-
-
     }
-    
     
     encoder.create_codes();
     std::cout << "tree" << std::endl;
     Bitset special;
     encoder.get_special(special);
     std::cout << "special" << std::endl;
+    std::cout << special.size() << std::endl;
+    std::cout << (std::string)special << std::endl;
     CodeTable code_table;
     encoder.codes(code_table);
     std::cout << "codetable ready " << std::endl;

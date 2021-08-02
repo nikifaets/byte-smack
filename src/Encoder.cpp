@@ -37,7 +37,6 @@ int Encoder::count_different_symbols(){
 }
 void Encoder::update_freq_table(std::vector<byte>& bytes){
 
-    std::cout << "bytes size " << bytes.size() << std::endl;
     for(int i=0; i<bytes.size(); i++){
 
         freq_table[bytes[i]] ++;
@@ -48,7 +47,6 @@ void Encoder::create_codes(){
     
     HTree htree;
 
-    std::cout << count_different_symbols() << std::endl;
     htree.create_code_table(this->code_table, freq_table, special);
     fill_decode_table();
 }
@@ -105,7 +103,6 @@ void Encoder::decode(std::vector<byte>& res, Bitset& codes){
         reader.add(codes[i]);
         num_bits++;
 
-        //std::cout <<(std::string) reader << std::endl;
         if(decode_table.count(reader) > 0){
 
             res.push_back(decode_table[reader]);

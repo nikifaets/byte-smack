@@ -8,9 +8,6 @@
 
 class FileWriter{
 
-    
-
-
     public:
 
     template<typename T> 
@@ -20,6 +17,8 @@ class FileWriter{
         char* buf = new char[num_bytes];
 
         utils::to_char_array(val, buf, num_bytes);
+        
+        std::cout << "write bytes " << buf << std::endl;
         f.write(buf, num_bytes);
 
     }

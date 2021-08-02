@@ -9,7 +9,6 @@ class FileReader{
 
     bool validate_file(std::ifstream& f);
 
-
     public:
 
     template <typename T>
