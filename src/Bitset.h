@@ -50,6 +50,7 @@ class Bitset{
 
     void add(bool bit);
     void reserve(int len);
+    void clear_head(const int len);
     operator std::string() const;
     operator byte() const;
     Bitset& operator+ (Bitset& o);

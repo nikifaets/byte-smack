@@ -76,17 +76,33 @@ void Bitset::reserve(int len){
 void Bitset::clear(){
 
     bits.clear();
+    next_free_bit = 0;
 
 }
+
+void Bitset::clear_head(const int len){
+
+    int ll_remainder = len;
+    while(ll_remainder >= 64){
+        bits.erase(bits.begin());
+        next_free_bit -= LL_BITS;
+        ll_remainder -= LL_BITS;
+    }
+
+    bits.back() << ll_remainder;
+    next_free_bit -= ll_remainder;
+    
+}
+
 Bitset::operator std::string() const{
 
     std::string res;
-    std::cout << "bits size " << bits.size() << std::endl;
+    //std::cout << "bits size " << bits.size() << std::endl;
+    //std::cout << "next free " << next_free_bit << std::endl;
     for(int i=0; i<bits.size(); i++){
 
         for(int bit_idx=0; bit_idx<LL_BITS; bit_idx++){
             
-            std::cout << "loop operator string" << std::endl;
             if(i * LL_BITS + bit_idx >= next_free_bit) break;
             std::string curr_bit = std::to_string((int)utils::get_kth_bit(bits[i], bit_idx));
             res += curr_bit;
@@ -174,7 +190,7 @@ bool Bitset::operator== (Bitset& o) const{
         if(utils::get_kth_bit(bits[long_idx], bit_idx) != o[i]) return false;
 
     }
-    return false;
+    return true;
 }
 
 int Bitset::size(){
@@ -186,5 +202,5 @@ std::size_t BitsetHash::operator() (const Bitset& b) const {
 
     std::hash<std::string> str_hash;
 
-    return str_hash(b);
+    return str_hash(std::string(b));
 }

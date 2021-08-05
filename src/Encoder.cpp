@@ -66,8 +66,17 @@ void Encoder::decode_table_from_code(DecodeTable& decode_table, CodeTable& code_
 
     for(it; it!=code_table.end(); ++it){
 
-        Bitset bitset = it->second;
-        decode_table[bitset] = it->first;
+        //std::cout << "add to decode table: " << it->first << std::endl;
+    
+        int count = decode_table.count(it->second);
+        if(count > 0){
+            std::cout << "DUPLICATE with " << it->first << " and " << decode_table[it->second] << std::endl;
+            BitsetHash bh;
+            std::cout << (std::string) it->second << " " << (std::string) code_table[decode_table[it->second]] << std::endl;
+            std::cout << bh(it->second) << std::endl;
+        }
+
+        decode_table[it->second] = it->first;
     }
 }
 void Encoder::codes(CodeTable& res) const{

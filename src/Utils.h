@@ -81,7 +81,12 @@ namespace utils{
 
         for(int i=0; i<num_bytes; i++){
 
-            val |= ((T)chars[num_bytes-i-1] << 8*i);
+            unsigned char unsigned_char = (unsigned char) 0 | chars[num_bytes-i-1];
+            val |= ((T)unsigned_char << 8*i);
+            //std::cout << "val on  " << i << "th iteration: ";
+            //utils::print_bits(val);
+            //std::cout << "last masked char: ";
+            //utils::print_bits((T)unsigned_char << 8*i);
             
         }
     }

@@ -18,13 +18,12 @@ class FileWriter{
 
         utils::to_char_array(val, buf, num_bytes);
         
-        std::cout << "write bytes " << buf << std::endl;
         f.write(buf, num_bytes);
 
     }
     void write_string(std::ofstream& f, std::string& str);
     void append_archive(std::ofstream& archive_name, Bitset& bitset, bool last=true);
-    void write_file(std::ofstream& archive, std::ifstream& f, Encoder& encoder);
+    void write_file(std::ofstream& archive, std::ifstream& f, Encoder& encoder, Bitset& special);
     void write_code_table(std::ofstream& archive, CodeTable& code_table, Bitset& special);
     void append_bytes(std::ofstream& f, std::vector<byte>& bytes);
     void append_bytes_text(std::ofstream& f, std::vector<byte>& bytes);

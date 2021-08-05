@@ -30,13 +30,20 @@ int main(){
     Archiver archiver;
 
     std::string arch_name = "hhh";
-    std::string fname = "../test/test_text";
-    std::vector<std::string> files = {fname};
+    std::string fname1 = "/home/nikifaets/Documents/va/4/NPashov4.pdf";
+    //std::string fname2 = "../test/text_1"
+    std::vector<std::string> files = {fname1};
     std::string out_dir = "out";
 
     archiver.compress(arch_name, files);
+    //assert(false);
     archiver.decompress(arch_name, out_dir);
+    std::cout << "DONE" << std::endl;
     
+    /*Bitset b((int) 5, 32);
+    std::cout << (std::string) b << std::endl;
+    b.clear_head(2);
+    std::cout << (std::string) b << std::endl;*/
     return 0;
 
 
