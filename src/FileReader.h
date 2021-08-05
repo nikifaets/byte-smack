@@ -18,10 +18,7 @@ class FileReader{
         char* bytes = new char(num_bytes);
 
         f.read(bytes, num_bytes);
-        //std::cout << "char array bitset: ";
-        for(int i=0; i<num_bytes; i++){
-            //utils::print_bits(bytes[i]);
-        }
+
         utils::from_char_array(res, bytes);
 
         return f.good();

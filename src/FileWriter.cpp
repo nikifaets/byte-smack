@@ -37,7 +37,6 @@ void FileWriter::append_bytes_text(std::ofstream& f, std::vector<byte>& bytes){
 
 void FileWriter::write_file(std::ofstream& archive, std::ifstream& f, Encoder& encoder, Bitset& special){
 
-    std::cout << "call write file\n ";
     assert(archive.good());
 
     FileReader reader;
@@ -50,8 +49,6 @@ void FileWriter::write_file(std::ofstream& archive, std::ifstream& f, Encoder& e
         success = reader.read_byte_sequence(f, bytes);
         
         encoder.encode(encoded, bytes);
-        // << "bitset from read bytes\n";
-        //std::cout << (std::string) encoded << std::endl; 
 
         bytes.clear();
 
@@ -86,9 +83,7 @@ void FileWriter::write_code_table(std::ofstream& archive, CodeTable& code_table,
 
         write_bytes(symbol, archive);
 
-        int code_size = code.size();
-        std::cout << "write code size: " << symbol << " " << code_size << " " << (std::string) code << std::endl;
-        
+        int code_size = code.size();        
         write_bytes(code_size, archive);
         append_archive(archive, code);
     }

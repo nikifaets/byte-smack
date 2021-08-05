@@ -97,8 +97,7 @@ void Bitset::clear_head(const int len){
 Bitset::operator std::string() const{
 
     std::string res;
-    //std::cout << "bits size " << bits.size() << std::endl;
-    //std::cout << "next free " << next_free_bit << std::endl;
+
     for(int i=0; i<bits.size(); i++){
 
         for(int bit_idx=0; bit_idx<LL_BITS; bit_idx++){

@@ -66,7 +66,6 @@ void Encoder::decode_table_from_code(DecodeTable& decode_table, CodeTable& code_
 
     for(it; it!=code_table.end(); ++it){
 
-        //std::cout << "add to decode table: " << it->first << std::endl;
     
         int count = decode_table.count(it->second);
         if(count > 0){

@@ -38,12 +38,7 @@ int main(){
     archiver.compress(arch_name, files);
     //assert(false);
     archiver.decompress(arch_name, out_dir);
-    std::cout << "DONE" << std::endl;
     
-    /*Bitset b((int) 5, 32);
-    std::cout << (std::string) b << std::endl;
-    b.clear_head(2);
-    std::cout << (std::string) b << std::endl;*/
     return 0;
 
 
