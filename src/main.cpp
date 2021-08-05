@@ -33,7 +33,7 @@ int main(){
     std::string fname1 = "/home/nikifaets/Documents/va/4/NPashov4.pdf";
     //std::string fname2 = "../test/text_1"
     std::vector<std::string> files = {fname1};
-    std::string out_dir = "out";
+    std::string out_dir = "out1";
 
     archiver.compress(arch_name, files);
     //assert(false);
