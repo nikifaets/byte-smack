@@ -3,6 +3,7 @@
 #include "Utils.h"
 #include <iostream>
 #include "Global.h"
+#include <math.h>
 
 bool FileReader::validate_file(std::ifstream& f){
 
@@ -11,6 +12,7 @@ bool FileReader::validate_file(std::ifstream& f){
 
 bool FileReader::read_byte_sequence(std::ifstream& file, std::vector<byte>& res, int num_bytes){
 
+    
     assert(file.good());
 
     int bytes_read = 0;
@@ -91,7 +93,7 @@ bool FileReader::read_and_decode(std::ifstream& archive, std::vector<byte>& res,
     bool end_archive = false;
 
     std::ofstream log("logs");
-    while(read_bytes(inp, archive) && decoded_bytes <= num_bytes && !end_archive){
+    while(decoded_bytes <= num_bytes && !end_archive && read_bytes(inp, archive)){
 
         Bitset inp_bitset(inp, sizeof(byte)*8);
         for(int bit=0; bit<inp_bitset.size(); bit++){
@@ -109,6 +111,14 @@ bool FileReader::read_and_decode(std::ifstream& archive, std::vector<byte>& res,
 
             if(code_buf == special){
 
+                std::cout << "READING FILE. Read special \n";
+                std::cout << "Code buf: " << (std::string) code_buf << std::endl;
+                for(int i=0; i<8; i++){
+                    read_bytes(inp, archive);
+                    std::cout << "read remaining bytes: " << i+1;
+                    utils::print_bits(inp);
+                    std::cout << std::endl;
+                }
                 end_archive = true;
                 break;
             }

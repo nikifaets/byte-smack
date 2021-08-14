@@ -16,9 +16,12 @@ class FileReader{
 
         int num_bytes = sizeof(T);
         char* bytes = new char(num_bytes);
-
+        //std::cout << "num bytes " << num_bytes << std::endl;
+        
         f.read(bytes, num_bytes);
-
+        for(int i=0; i<num_bytes; i++){
+            //utils::print_bits(bytes[i]);
+        }
         utils::from_char_array(res, bytes);
 
         return f.good();
