@@ -62,10 +62,10 @@ void Archiver::compress(const std::string& archive_name, const std::vector<std::
     std::ifstream f;
     
     std::vector<std::string> archive_filenames;
-    filepath_manager.process_filename(files, archive_filenames);
+    filepath_manager.filepaths_to_archive_names(files, archive_filenames);
 
     std::vector<std::string> readable_filenames;
-    filepath_manager.dirnames_to_readable_files(files, readable_filenames);
+    filepath_manager.filepaths_to_readable_files(files, readable_filenames);
 
     std::cout << "files read for code table creation " << readable_filenames.size() << std::endl;
     for(int i=0; i<readable_filenames.size(); i++){

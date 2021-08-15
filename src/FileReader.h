@@ -7,7 +7,7 @@
 
 class FileReader{
 
-    bool validate_file(std::ifstream& f);
+    bool validate_file(std::ifstream& f) const;
 
     public:
 
@@ -30,5 +30,5 @@ class FileReader{
     bool read_byte_sequence(std::ifstream& file, std::vector<byte>& res, int num_bytes=2000000);
     bool read_code_table(std::ifstream& archive, CodeTable& code_table, Bitset& special);
     bool read_code(std::ifstream& archive, Bitset& res);
-    bool read_and_decode(std::ifstream& archive, std::vector<byte>& res, const DecodeTable& decode_table, Bitset& special, const int num_bytes=1000000);
+    bool read_and_decode(std::ifstream& archive, std::vector<byte>& res, const DecodeTable& decode_table, const Bitset& special, const int num_bytes=1000000);
 };

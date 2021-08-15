@@ -5,12 +5,19 @@
 #include "Global.h"
 #include <math.h>
 
-bool FileReader::validate_file(std::ifstream& f){
+
+/*
+    Различни помощни методи за четене на файл, на Bitset, на байт, на CodeTable и др.
+    Дизайнът е измислен, така че да позволява четене на файлове без да се зареждат наведнъж целите. Това е с цел пестене на памет. При работа
+    с големи файлове е по-разумно файлът да се чете постепенно, на малки групи от байтове, вместо да се зарежда целия в паметта.
+*/
+
+bool FileReader::validate_file(std::ifstream& f) const{
 
     return f.good();
 }
 
-bool FileReader::read_byte_sequence(std::ifstream& file, std::vector<byte>& res, int num_bytes){
+bool FileReader::read_byte_sequence(std::ifstream& file, std::vector<byte>& res, const int num_bytes){
 
     
     assert(file.good());
@@ -25,7 +32,6 @@ bool FileReader::read_byte_sequence(std::ifstream& file, std::vector<byte>& res,
         
     }
 
-    //assert(!file.eof());
     return !file.eof();
     
 }
@@ -34,8 +40,6 @@ bool FileReader::read_code_table(std::ifstream& archive, CodeTable& code_table, 
         
     assert(archive.good());
 
-
-    //assert(false);
 
     read_code(archive, special);
 
@@ -84,7 +88,7 @@ bool FileReader::read_code(std::ifstream& archive, Bitset& res){
 
 }
 
-bool FileReader::read_and_decode(std::ifstream& archive, std::vector<byte>& res, const DecodeTable& decode_table, Bitset& special, const int num_bytes){
+bool FileReader::read_and_decode(std::ifstream& archive, std::vector<byte>& res, const DecodeTable& decode_table, const Bitset& special, const int num_bytes){
 
     Bitset code_buf;
 
@@ -111,15 +115,9 @@ bool FileReader::read_and_decode(std::ifstream& archive, std::vector<byte>& res,
 
             if(code_buf == special){
 
-                std::cout << "READING FILE. Read special \n";
-                std::cout << "Code buf: " << (std::string) code_buf << std::endl;
-                std::cout << "Special: " << (std::string) special << std::endl;
                 for(int i=0; i<8; i++){
                     inp = 0;
                     read_bytes(inp, archive);
-                    std::cout << "read remaining bytes: " << i+1 << " ";
-                    utils::print_bits(inp);
-                    std::cout << std::endl;
                 }
                 end_archive = true;
                 break;

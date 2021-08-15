@@ -43,7 +43,6 @@ void FileWriter::write_file(std::ofstream& archive, std::ifstream& f, Encoder& e
 
     bool success = false;
     Bitset encoded;
-
     do{
 
         success = reader.read_byte_sequence(f, bytes);

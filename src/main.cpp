@@ -42,7 +42,7 @@ int main(){
     std::vector<std::string> out;
     std::vector<std::string> files_to_decompress = {fname5, fname3};
 
-    h.process_filename(files_to_decompress, out);
+    h.filepaths_to_readable_files(files_to_decompress, out);
 
     archiver.compress(arch_name, files);
     //assert(false);

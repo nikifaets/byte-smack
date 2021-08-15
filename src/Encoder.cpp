@@ -22,7 +22,7 @@ Encoder::Encoder(){
     freq_table.resize(BYTES_COUNT);
 }
 
-void Encoder::get_freq_table(std::vector<int>& out){
+void Encoder::get_freq_table(std::vector<int>& out) const{
 
     for(int i=0; i<BYTES_COUNT; i++){
 
@@ -30,7 +30,7 @@ void Encoder::get_freq_table(std::vector<int>& out){
     }
 }
 
-int Encoder::count_different_symbols(){
+int Encoder::count_different_symbols() const{
 
     int count = 0;
     for(int i=0; i<freq_table.size(); i++){
@@ -40,7 +40,7 @@ int Encoder::count_different_symbols(){
 
     return count;
 }
-void Encoder::update_freq_table(std::vector<byte>& bytes){
+void Encoder::update_freq_table(const std::vector<byte>& bytes){
 
     for(int i=0; i<bytes.size(); i++){
 
@@ -56,7 +56,7 @@ void Encoder::create_codes(){
     fill_decode_table();
 }
 
-void Encoder::get_special(Bitset& res){
+void Encoder::get_special(Bitset& res) const{
 
     res = special;
 }
@@ -65,9 +65,9 @@ void Encoder::fill_decode_table(){
 
 
 }
-void Encoder::decode_table_from_code_table(DecodeTable& decode_table, CodeTable& code_table){
+void Encoder::decode_table_from_code_table(DecodeTable& decode_table, const CodeTable& code_table) const{
 
-    CodeTable::iterator it = code_table.begin();
+    CodeTable::const_iterator it = code_table.begin();
 
     for(it; it!=code_table.end(); ++it){
 
@@ -76,7 +76,7 @@ void Encoder::decode_table_from_code_table(DecodeTable& decode_table, CodeTable&
         if(count > 0){
             std::cout << "DUPLICATE with " << it->first << " and " << decode_table[it->second] << std::endl;
             BitsetHash bh;
-            std::cout << (std::string) it->second << " " << (std::string) code_table[decode_table[it->second]] << std::endl;
+            std::cout << (std::string) it->second << " " << (std::string) code_table.at(decode_table[it->second]) << std::endl;
             std::cout << bh(it->second) << std::endl;
         }
 
@@ -104,7 +104,7 @@ void Encoder::encode(const std::vector<byte>& bytes, Bitset& res) const{
     }
 }
 
-void Encoder::decode(std::vector<byte>& res, Bitset& codes){
+void Encoder::decode(std::vector<byte>& res, Bitset& codes) const{
 
     int codes_len = codes.size();
     Bitset reader;
@@ -119,7 +119,7 @@ void Encoder::decode(std::vector<byte>& res, Bitset& codes){
 
         if(decode_table.count(reader) > 0){
 
-            res.push_back(decode_table[reader]);
+            res.push_back(decode_table.at(reader));
             
             Bitset new_reader;
             reader = new_reader;

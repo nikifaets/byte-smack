@@ -18,22 +18,18 @@ BitReference& BitReference::operator=(const bool val){
     if(utils::get_kth_bit(*ptr, bit) != val){
         utils::toggle_kth_bit(*ptr, bit);
     }
-
     return *this;
-    
 }
 
 bool BitReference::operator != (const BitReference& o)const{
 
     return !(*this == o);
-    
 }
 
 unsigned long long& BitReference::long_val(){
 
     return *ptr;
 }
-
 
 Bitset::Bitset() {}
 
@@ -174,6 +170,7 @@ BitReference Bitset::operator[] (const int idx){
     if(idx > next_free_bit) next_free_bit = idx + 1;
     return BitReference(bits[long_idx], bit_idx);
 }
+
 
 bool Bitset::operator == (Bitset& o) const {
 

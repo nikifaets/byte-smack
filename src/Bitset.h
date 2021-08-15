@@ -30,7 +30,10 @@ class BitReference{
 };
 
 
-
+/*
+    Клас, който позволява съхраняване и манипулация на последователност от битове със случайна дължина. Имплементира се с вектор от unsigned long long-ове.
+    Поддържа конкатенация, индексация, хеширане и преобразуване към string.
+*/
 class Bitset{
 
     std::vector<unsigned long long> bits;
@@ -41,7 +44,7 @@ class Bitset{
     Bitset();
 
     template <typename T>
-    Bitset(T code, int len){
+    Bitset(const T code, const int len){
 
         assert(len <= sizeof(T) * 8);
 
@@ -51,8 +54,8 @@ class Bitset{
         }
     }
 
-    void add(bool bit);
-    void reserve(int len);
+    void add(const bool bit);
+    void reserve(const int len);
     void clear_head(const int len);
     operator std::string() const;
     operator byte() const;
