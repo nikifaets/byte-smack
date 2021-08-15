@@ -20,7 +20,8 @@
         std::vector<std::string> readable_filenames;
         filepath_manager.dirnames_to_readable_files(files, readable_filenames);
 
-        for(int i=0; i<files.size(); i++){
+        std::cout << "files read for code table creation " << readable_filenames.size() << std::endl;
+        for(int i=0; i<readable_filenames.size(); i++){
 
             std::string file = readable_filenames[i];
             f.open(file);
@@ -44,15 +45,18 @@
         CodeTable code_table;
         encoder.codes(code_table);
         std::ofstream of(archive_name);
+        std::ofstream codes("codes");
         for(const std::pair<byte, Bitset>& code : code_table){
-            of << "key: " << (byte) code.first << std::endl;
-            of << "value: " << (std::string) code.second << std::endl;
+            codes << "key: " << (byte) code.first << std::endl;
+            codes << "value: " << (std::string) code.second << std::endl;
         }
+        codes.close();
+
         std::ofstream archive(archive_name, std::ios::binary);
         assert(archive.good());
 
         writer.write_code_table(archive, code_table, special);
-        writer.write_bytes(files.size(), archive);
+        writer.write_bytes(readable_filenames.size(), archive);
         std::cout << "files num " << files.size() << std::endl;
         for(int i=0; i<readable_filenames.size(); i++){
 
@@ -70,6 +74,7 @@
             //assert(file != files[1]);
             writer.write_string(archive, archive_filename);
             writer.write_file(archive, f, encoder, special);
+            //if(i > 0)assert(readable_filenames[i-1] != "CMakeFiles/Bytesmack.dir/compiler_depend.make");
             f.close();
             
         }
@@ -123,19 +128,28 @@
             bool success = true;
             
             std::string filepath = out_dir + "/" + filename;
-            bool file_requested = (std::find(files.begin(), files.end(), files[i]) != std::end(files));
-            std::filesystem::path p(filepath);
+            bool file_requested = (std::find(files.begin(), files.end(), filename) != std::end(files));
 
-            std::filesystem::create_directories(p.parent_path());
-            std::ofstream of(filepath);
+            std::filesystem::path p(filepath);
+            std::ofstream of;
+            if(file_requested){
+                
+                std::filesystem::create_directories(p.parent_path());
+                of.open(filepath);
+                assert(of.good());
+
+                
+            } 
+
             std::cout << "FILEPATH " << filepath << std::endl;
+            
             while(success){
 
                 success = reader.read_and_decode(archive, bytes, decode_table, special);
                 if(file_requested) writer.append_bytes(of, bytes);
                 bytes.clear();
             }
-            of.close();
+            if(file_requested) of.close();
             std::cout << "file ready \n";
 
         }

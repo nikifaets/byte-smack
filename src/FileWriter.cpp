@@ -8,7 +8,6 @@
 void FileWriter::append_archive(std::ofstream& archive, Bitset& bitset, bool last){
 
     assert(archive.good());
-    std::cout << "append " << (std::string) bitset << std::endl;
     const std::vector<unsigned long long>& longs = bitset.longs();
     for(int i=0; i<longs.size()-1; i++){
 
@@ -57,6 +56,7 @@ void FileWriter::write_file(std::ofstream& archive, std::ifstream& f, Encoder& e
 
     //std::cout << "encoded before add sepcial " << (std::string) encoded << std::endl;
     encoded += special;
+    std::cout << "special " << (std::string) special << std::endl;
     std::cout << "write encoded " << encoded.size() << std::endl;
     std::cout << "longs used " << encoded.longs().size() << std::endl;
     if(encoded.size() < 100) std::cout << (std::string) encoded << std::endl;
@@ -64,6 +64,7 @@ void FileWriter::write_file(std::ofstream& archive, std::ifstream& f, Encoder& e
     int ull_used_bytes = std::ceil(encoded.size() / 8.);
     int bytes_remainder = 8 - ull_used_bytes % 8;
 
+    if(bytes_remainder == 8) bytes_remainder = 0;
     std::cout << "APPEND REMAINDER NULL BYTES " << 8 - bytes_remainder << std::endl;
     for(int i=0; i<8-bytes_remainder; i++){
         write_bytes((byte)0, archive);

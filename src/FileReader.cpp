@@ -114,8 +114,9 @@ bool FileReader::read_and_decode(std::ifstream& archive, std::vector<byte>& res,
                 std::cout << "READING FILE. Read special \n";
                 std::cout << "Code buf: " << (std::string) code_buf << std::endl;
                 for(int i=0; i<8; i++){
+                    inp = 0;
                     read_bytes(inp, archive);
-                    std::cout << "read remaining bytes: " << i+1;
+                    std::cout << "read remaining bytes: " << i+1 << " ";
                     utils::print_bits(inp);
                     std::cout << std::endl;
                 }

@@ -14,7 +14,6 @@ class FileWriter{
     void write_bytes(const T& val, std::ofstream& f){
         
         assert(f.good());
-        if(val == (byte)0) std::cout << "write remainder " << std::endl;
         int num_bytes = sizeof(val);
         char* buf = new char[num_bytes];
 
