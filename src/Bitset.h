@@ -15,8 +15,7 @@ class BitReference{
 
     friend class Bitset;
 
-    unsigned long long dummy;
-    unsigned long long& l = dummy;
+    unsigned long long* ptr;
     int bit;
 
     BitReference();

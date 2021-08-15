@@ -6,17 +6,17 @@
 
 
 BitReference::BitReference() {}
-BitReference::BitReference(unsigned long long& l, int bit) : l(l), bit(bit) {}
+BitReference::BitReference(unsigned long long& l, int bit) : ptr(&l), bit(bit) {}
 
 BitReference::operator bool() const{
 
-    return utils::get_kth_bit(l, bit);
+    return utils::get_kth_bit(*ptr, bit);
 }
 
 BitReference& BitReference::operator=(const bool val){
 
-    if(utils::get_kth_bit(l, bit) != val){
-        utils::toggle_kth_bit(l, bit);
+    if(utils::get_kth_bit(*ptr, bit) != val){
+        utils::toggle_kth_bit(*ptr, bit);
     }
 
     return *this;
@@ -31,14 +31,14 @@ bool BitReference::operator != (const BitReference& o)const{
 
 unsigned long long& BitReference::long_val(){
 
-    return l;
+    return *ptr;
 }
 
 
 Bitset::Bitset() {}
 
 
-void Bitset::add(bool bit){
+void Bitset::add(const bool bit){
 
     if(next_free_bit % LL_BITS == 0 && next_free_bit >= bits.size() * LL_BITS){
 
@@ -55,7 +55,7 @@ void Bitset::add(bool bit){
     next_free_bit ++;
 }
 
-void Bitset::reserve(int len){
+void Bitset::reserve(const int len){
 
     assert(len > bits.size() * LL_BITS);
 

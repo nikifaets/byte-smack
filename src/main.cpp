@@ -35,12 +35,12 @@ int main(){
     std::string fname4 = "test/testrec";
     std::string fname5 = "test";
     //std::string fname2 = "../test/text_1"
-    std::vector<std::string> files = {fname1, fname5};
+    std::vector<std::string> files = {fname5, fname3};
     std::string out_dir = "out1";
 
     FilePathManager h;
     std::vector<std::string> out;
-    std::vector<std::string> files_to_decompress = {fname1, fname5};
+    std::vector<std::string> files_to_decompress = {fname5, fname3};
 
     h.process_filename(files_to_decompress, out);
 
