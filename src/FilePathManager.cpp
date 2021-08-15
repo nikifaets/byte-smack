@@ -4,10 +4,17 @@
 #include <iostream>
 #include <vector>
 
-// If input is a single file, save only its name, without the path
-// If input is a directory, save the names of all file inside, including the path
+/* 
+    Този клас предоставя два метода за обработка на вектори с пътища до файлове и директории.
+    filepaths_to_archive_names преобразува пълно име на файл (включително релативен път до него) до името, с което той ще стои в архивния файл.
+    Например dir/gosho/pepi.txt ще бъде pepi.txt в архивния файл, понеже е индивидуален файл, а не директория.
+    dir/dir2 ще се преобразува до dir/dir2/a.txt, dir/dir2/b.txt и т.н. с всички файлове, които се съдържат под зададената директория. Работи рекурсивно.
+    filepaths_to_readble_files връща преобразувани имена, така че да могат да бъдат усвоени от std::fstream.
+    dir1/dir2 отново ще се разгърне до списък с всички файлове под dir2, а самостоятелни файлове ще си останат с релативни пътища, за да могат да бъдат прочетени.
+    На този етап се поддържат само пълни пътища без wildcards и символи за навигиране директория нагоре "..". 
+*/
 
-void FilePathManager::process_filename(const std::vector<std::string>& filenames, std::vector<std::string>& out){
+void FilePathManager::filepaths_to_archive_names(const std::vector<std::string>& filenames, std::vector<std::string>& out) const{
 
     for(const std::string& filename : filenames){
 
@@ -30,7 +37,7 @@ void FilePathManager::process_filename(const std::vector<std::string>& filenames
     }
 }
 
-void FilePathManager::dirnames_to_readable_files(const std::vector<std::string>& filenames, std::vector<std::string>& out){
+void FilePathManager::filepaths_to_readable_files(const std::vector<std::string>& filenames, std::vector<std::string>& out) const{
 
     for(const std::string& file : filenames){
 
@@ -49,11 +56,6 @@ void FilePathManager::dirnames_to_readable_files(const std::vector<std::string>&
 
             out.push_back(file);
         
-        }
-
-        std::cout << "READABLE FILENAMES  \n";
-        for(const std::string& f : out){
-            std::cout << f << std::endl;
         }
     
     }

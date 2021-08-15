@@ -5,6 +5,10 @@
 #include "FileReader.h"
 #include <math.h>
 
+/*
+    Подобно на FileReader, но за писане.
+*/
+
 void FileWriter::append_archive(std::ofstream& archive, Bitset& bitset, bool last){
 
     assert(archive.good());
@@ -54,23 +58,18 @@ void FileWriter::write_file(std::ofstream& archive, std::ifstream& f, Encoder& e
 
     } while(success);
 
-    //std::cout << "encoded before add sepcial " << (std::string) encoded << std::endl;
     encoded += special;
-    std::cout << "special " << (std::string) special << std::endl;
-    std::cout << "write encoded " << encoded.size() << std::endl;
-    std::cout << "longs used " << encoded.longs().size() << std::endl;
-    if(encoded.size() < 100) std::cout << (std::string) encoded << std::endl;
+
     append_archive(archive, encoded);
+    
     int ull_used_bytes = std::ceil(encoded.size() / 8.);
     int bytes_remainder = 8 - ull_used_bytes % 8;
 
     if(bytes_remainder == 8) bytes_remainder = 0;
-    std::cout << "APPEND REMAINDER NULL BYTES " << 8 - bytes_remainder << std::endl;
     for(int i=0; i<8-bytes_remainder; i++){
         write_bytes(archive, (byte)0);
     }
 
-    //std::cout << "encoded " << (std::string) encoded << std::endl;
 }
 
 void FileWriter::write_byte_remainder(std::ofstream& archive, const Bitset& encoded){
@@ -79,11 +78,9 @@ void FileWriter::write_byte_remainder(std::ofstream& archive, const Bitset& enco
     int bytes_remainder = 8 - ull_used_bytes % 8;
 
     if(bytes_remainder == 8) bytes_remainder = 0;
-    std::cout << "APPEND REMAINDER NULL BYTES " << 8 - bytes_remainder << std::endl;
     for(int i=0; i<8-bytes_remainder; i++){
         write_bytes(archive, (byte)0);
     }
-    std::cout << "added remainder\n";
 }
 
 void FileWriter::write_code_table(std::ofstream& archive, CodeTable& code_table, Bitset& special){
@@ -91,8 +88,7 @@ void FileWriter::write_code_table(std::ofstream& archive, CodeTable& code_table,
 
     //archive << special.size();
     int special_len = special.size();
-    std::cout << "write special len\n";
-    utils::print_bits(special_len);
+
     write_bytes(archive, special_len);
 
     append_archive(archive, special);
@@ -120,7 +116,6 @@ void FileWriter::write_string(std::ofstream& f, const std::string& str){
 
     int strlen = str.size();
     //assert(str != "../test/test_text2");
-    std::cout << "write string " << str << std::endl;
     for(int i=0; i<strlen; i++){
 
         write_bytes(f, str[i]);

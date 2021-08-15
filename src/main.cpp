@@ -11,47 +11,51 @@
 #include "FileReader.h"
 #include "Archiver.h"
 #include "FilePathManager.h"
+#include "CLIParser.h"
 
-int sum(int v){
+/* 
+    Командният интерфейс не е напълно завършен. Има проблем с метода за обновяване на файл. Може да се направи тест като се закоментират ред 19-21 включително и
+    се разкоментират другите.
 
-    int res = 0;
-    for(int i=0; i<=v; i++){
+    Предоставена функционалност: Всичко описано в заданието освен възможността за използване на wildcards като * и ?, и проверката дали
+    в архива има проблем.
+*/
 
-        res += i;
-    }
+/*
+    Тествайте командния интерфейс като пуснете програмата и дадете help като CLI аргумент.
+*/
 
-    return res;
-}
+int main(int argc, char* argv[]){
 
-int main(){
+    /*CLIParser parser;
+    parser.parse(argc, argv);
+    std::vector<byte> inp;*/
 
-    std::vector<byte> inp;
-
+    // Разкоментирайте за тест, който не е през командния интерфейс.
     Archiver archiver;
 
-    std::string arch_name = "hhh";
-    std::string fname1 = "CMakeFiles/3.21.1/";
-    std::string fname3 = "CMakeFiles";
-    std::string fname4 = "test/testrec";
-    std::string fname5 = "test";
-    //std::string fname2 = "../test/text_1"
-    std::vector<std::string> files = {fname5, fname3};
-    std::string out_dir = "out1";
+    std::string arch_name = "archive";
+    std::string fname1 = "/home/nikifaets/Documents/vaccination";
+    std::string fname2 = "/home/nikifaets/Documents/fmi_io";
+    std::vector<std::string> files = {fname1, fname2};
+    std::string out_dir = "decompressed";
 
-    FilePathManager h;
+    FilePathManager path_manager;
     std::vector<std::string> out;
-    std::vector<std::string> files_to_decompress = {fname5, fname3};
+    std::vector<std::string> files_to_decompress = {fname1, fname2}; // Това са файловете или директориите, които ще се компресират
 
-    h.process_filename(files_to_decompress, out);
+    path_manager.filepaths_to_readable_files(files_to_decompress, out);
 
-    archiver.compress(arch_name, files);
-    //assert(false);
-    archiver.decompress(arch_name, out_dir, out, false);
+    archiver.compress(arch_name, files); // Компресия във файл "archive"
+    archiver.decompress(arch_name, out_dir, out, true); // Декомпресия в директория "decompressed"
 
     std::cout << "---------------------------------------------Decompressed\n";
-    archiver.modify_archived_file(arch_name, "CMakeFiles/3.21.1/CompilerIdC/a.out", "testrec_modified");
+
+    archiver.modify_archived_file(arch_name, "/home/nikifaets/Documents/fmi_io/io_kontr.ods", "testrec_modified"); // Промяна на даден файл от архива. Попълнете файл от архива в левите кавички и случаен файл в десните. 
+                                                    // За десните, моля, използвайте абсолютен път в машината.
+
     std::cout << "....................................." << "Added new file\n";
-    archiver.decompress("temp", "out_temp", out, true);
+    archiver.decompress(arch_name, "decompressed_changed", out, false);
     
     return 0;
 

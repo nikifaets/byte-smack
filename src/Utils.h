@@ -75,7 +75,7 @@ namespace utils{
 
     template<typename T>
     void from_char_array(T& val, char*& chars){
-        //std::cout << "from char array " << val << std::endl;
+
         val = (T)0;
         int num_bytes = sizeof(val);
 
@@ -83,12 +83,10 @@ namespace utils{
 
             unsigned char unsigned_char = (unsigned char) 0 | chars[num_bytes-i-1];
             val |= ((T)unsigned_char << 8*i);
-            //std::cout << "temp val \n";
-            //utils::print_bits(val);
+ 
             
         }
-        //std::cout << "from char array " << std::endl;
-        //utils::print_bits(val);
+
     }
 }
 

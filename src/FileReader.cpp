@@ -5,6 +5,12 @@
 #include "Global.h"
 #include <math.h>
 
+/*
+    Различни помощни методи за четене на файл, на Bitset, на байт, на CodeTable и др.
+    Дизайнът е измислен, така че да позволява четене на файлове без да се зареждат наведнъж целите. Това е с цел пестене на памет. При работа
+    с големи файлове е по-разумно файлът да се чете постепенно, на малки групи от байтове, вместо да се зарежда целия в паметта.
+*/
+
 bool FileReader::validate_file(std::ifstream& f){
 
     return f.good();
@@ -111,16 +117,8 @@ bool FileReader::read_and_decode(std::ifstream& archive, std::vector<byte>& res,
 
             if(code_buf == special){
 
-                std::cout << "READING FILE. Read special \n";
-                std::cout << "Code buf: " << (std::string) code_buf << std::endl;
-                std::cout << "Special: " << (std::string) special << std::endl;
-                for(int i=0; i<8; i++){
-                    inp = 0;
-                    read_bytes(inp, archive);
-                    std::cout << "read remaining bytes: " << i+1 << " ";
-                    utils::print_bits(inp);
-                    std::cout << std::endl;
-                }
+                unsigned long long h;
+                read_bytes(h, archive);
                 end_archive = true;
                 break;
             }
@@ -144,6 +142,8 @@ void FileReader::read_string(std::string& str, const int len, std::ifstream& f){
 
         str += arr[i];
     }
+
+    delete [] arr;
 
 
 }

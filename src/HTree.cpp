@@ -2,7 +2,15 @@
 #include <queue>
 #include <iostream>
 
-HNode* HNodePtr::operator*(){
+
+/*
+    Клас за построяване на дърво на Хъфман и добиване на Хъфман кодове.
+
+    Забележка: С класа HNodePtr през зимната сесия съм се опитал да постигна функционалност, подобна на тази на smart pointer. 
+    При разглеждане на кода по време на поправителната сесия забелязах, че стават големи отечки. 
+    Заради ограничения от времето просто смених всеки нормален указател със shared pointer. 
+*/
+std::shared_ptr<HNode> HNodePtr::operator*(){
 
     return node;
 }
@@ -16,7 +24,7 @@ bool HNodePtr::operator > (const HNodePtr& o) const{
 
     return this->node->count > o.node->count;
 }
-HNodePtr::HNodePtr(HNode* node) : node(node) {}
+HNodePtr::HNodePtr(std::shared_ptr<HNode> node) : node(node) {}
 
 HNodePtr::HNodePtr() {}
 
@@ -34,10 +42,10 @@ void HTree::construct_tree(std::vector<int>& freq_table){
 
         if(freq_table[i] > 0){
 
-            byte* val = new byte;
+            std::shared_ptr<byte> val(new byte);
             *val = i;
             
-            q.push(HNodePtr(new HNode(freq_table[i], val)));
+            q.push(HNodePtr(std::shared_ptr<HNode>(new HNode(freq_table[i], val))));
         }
     }
 
@@ -48,12 +56,12 @@ void HTree::construct_tree(std::vector<int>& freq_table){
         HNodePtr top2_ptr = q.top();
         q.pop();
 
-        HNode* top1 = *top1_ptr;
-        HNode* top2 = *top2_ptr;
-        int top1_count = (top1)->get_count();
-        int top2_count = (top2)->get_count();
+        std::shared_ptr<HNode> top1 = *top1_ptr;
+        std::shared_ptr<HNode> top2 = *top2_ptr;
+        int top1_count = top1->get_count();
+        int top2_count = top2->get_count();
 
-        HNodePtr merged = HNodePtr(new HNode(top1_count + top2_count, top1, top2));
+        HNodePtr merged = HNodePtr(std::shared_ptr<HNode>( new HNode(top1_count + top2_count, top1, top2)));
 
         q.push(merged);   
     }
@@ -61,7 +69,7 @@ void HTree::construct_tree(std::vector<int>& freq_table){
     this->root = q.top();
 }
 
-void HTree::visit_write_code(HNode*& node, CodeTable& code_table, Bitset code, int code_len){
+void HTree::visit_write_code(std::shared_ptr<HNode>& node, CodeTable& code_table, Bitset code, int code_len){
 
     if(node == nullptr) return;
     if(node->right == nullptr && node->left == nullptr){
@@ -83,8 +91,8 @@ void HTree::visit_write_code(HNode*& node, CodeTable& code_table, Bitset code, i
 }
 void HTree::get_codes_from_tree(CodeTable& code_table, Bitset& special){
 
-    HNode* root = *(this->root);
-    HNode* furthest;
+    std::shared_ptr<HNode> root = *(this->root);
+    std::shared_ptr<HNode> furthest;
     find_furthest(furthest);
     Bitset start;
     visit_write_code(root, code_table, start, 0);
@@ -97,9 +105,9 @@ void HTree::get_codes_from_tree(CodeTable& code_table, Bitset& special){
 
 }
 
-void HTree::find_furthest(HNode*& res){
+void HTree::find_furthest(std::shared_ptr<HNode>& res){
 
-    HNode* furthest = *root; 
+    std::shared_ptr<HNode> furthest = *root; 
     int max_distance = 0;
     visit_find_furthest(furthest, furthest, 0, max_distance);
 
@@ -107,7 +115,7 @@ void HTree::find_furthest(HNode*& res){
     
 }
 
-void HTree::visit_find_furthest(HNode* node, HNode*& furthest, int distance, int& max_distance){
+void HTree::visit_find_furthest(std::shared_ptr<HNode>& node, std::shared_ptr<HNode>& furthest, int distance, int& max_distance) const{
 
     if(node == nullptr) return;
     if(node->left == nullptr && node->left == nullptr){
@@ -123,7 +131,7 @@ void HTree::visit_find_furthest(HNode* node, HNode*& furthest, int distance, int
     visit_find_furthest(node->right, furthest, ++distance, max_distance);
     
 }
-void HTree::print_tree(HNode* root){
+void HTree::print_tree(const std::shared_ptr<HNode>& root) const{
 
     if(root == nullptr) return;
     std::cout << "Node:" << std::endl;

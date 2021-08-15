@@ -1,25 +1,25 @@
 #pragma once
 
 #include "Global.h"
+#include <memory>
 class HNode{
-
 
 
     public:
 
-    HNode* left = nullptr;
-    HNode* right = nullptr;
-    byte* val =  nullptr;
+    std::shared_ptr<HNode> left = nullptr;
+    std::shared_ptr<HNode> right = nullptr;
+    std::shared_ptr<byte> val =  nullptr;
     int count;
     HNode(int count);
-    HNode(int count, byte* val);
-    HNode(int count, HNode*& left, HNode*& right);
+    HNode(int count, std::shared_ptr<byte>& val);
+    HNode(int count, std::shared_ptr<HNode>& left, std::shared_ptr<HNode>& right);
     
-    const byte* get_value() const;
+    std::shared_ptr<byte> get_value() const;
     int get_count() const;
 
-    bool operator < (const HNode*& o);
-    bool operator < (HNode*& o);
+    bool operator < (const std::shared_ptr<HNode>& o);
+    bool operator < (std::shared_ptr<HNode>& o);
 
 
 };

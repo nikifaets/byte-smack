@@ -17,13 +17,9 @@ class FileWriter{
         int num_bytes = sizeof(val);
         char* buf = new char[num_bytes];
 
-        //std::cout << "write bytes " << std::endl;
 
         utils::to_char_array(val, buf, num_bytes);
-        for(int i=0; i<num_bytes; i++){
-            //utils::print_bits(buf[i]);
-        }
-        //std::cout << buf[0] << std::endl;
+
         assert(f.write(buf, num_bytes).good());
         delete [] buf;
 

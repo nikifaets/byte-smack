@@ -4,7 +4,10 @@
 #include <assert.h>
 #include <bitset>
 
-
+/*
+    Клас, представляващ референция към позиция (бит) в Bitset. Идеята е вдъхновена от std::bitset::reference. 
+    Използва се, за да позволява четене и писане в Bitset последством оператор [], използвайки индексация по индекс на бит. 
+*/
 BitReference::BitReference() {}
 BitReference::BitReference(unsigned long long& l, int bit) : ptr(&l), bit(bit) {}
 
@@ -35,6 +38,10 @@ unsigned long long& BitReference::long_val(){
 }
 
 
+/*
+    Класът Bitset е основната структура за съхранение и манипулиране на последователност от битове. Имплементиран е с вектор от unsigned long long.
+    Поддържа случаен достъп до бит, конкатенация на Bitset-ове, преобразуване към стринг, хеширане и др.
+*/
 Bitset::Bitset() {}
 
 

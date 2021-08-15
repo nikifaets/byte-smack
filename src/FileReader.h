@@ -15,15 +15,16 @@ class FileReader{
     bool read_bytes(T& res, std::ifstream& f){
 
         int num_bytes = sizeof(T);
-        char* bytes = new char(num_bytes);
-        //std::cout << "num bytes " << num_bytes << std::endl;
-        
+        char* bytes = new char[num_bytes];
+        for(int i=0; i<num_bytes; i++){
+            bytes[i] = 0;
+        }
         f.read(bytes, num_bytes);
         for(int i=0; i<num_bytes; i++){
-            //utils::print_bits(bytes[i]);
         }
         utils::from_char_array(res, bytes);
 
+        delete[] bytes;
         return f.good();
     }
     void read_string(std::string& str, const int len, std::ifstream& f);

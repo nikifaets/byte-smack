@@ -62,12 +62,11 @@ void Archiver::compress(const std::string& archive_name, const std::vector<std::
     std::ifstream f;
     
     std::vector<std::string> archive_filenames;
-    filepath_manager.process_filename(files, archive_filenames);
+    filepath_manager.filepaths_to_archive_names(files, archive_filenames);
 
     std::vector<std::string> readable_filenames;
-    filepath_manager.dirnames_to_readable_files(files, readable_filenames);
+    filepath_manager.filepaths_to_readable_files(files, readable_filenames);
 
-    std::cout << "files read for code table creation " << readable_filenames.size() << std::endl;
     for(int i=0; i<readable_filenames.size(); i++){
 
         std::string file = readable_filenames[i];
@@ -102,21 +101,16 @@ void Archiver::compress(const std::string& archive_name, const std::vector<std::
     assert(archive.good());
 
     writer.write_code_table(archive, code_table, special);
-    std::cout << "files num " << readable_filenames.size() << std::endl;
 
     writer.write_bytes(archive, (int)readable_filenames.size());
     for(int i=0; i<readable_filenames.size(); i++){
 
         std::string file = readable_filenames[i];
         std::string archive_filename = archive_filenames[i];
-        std::cout << "WRITE FILE TO ARCHIVE " << archive_filename << std::endl;
-
-        std::cout << "Try to write file: " << file << std::endl;
 
         f.open(file);
         assert(f.good());
         int filename_size = archive_filename.size();
-        std::cout << "FILE NAME SIZE " << filename_size << std::endl;
         writer.write_bytes(archive, (int)filename_size);
         //assert(file != files[1]);
         writer.write_string(archive, archive_filename);
@@ -151,13 +145,14 @@ bool Archiver::decompress(const std::string& archive_name, const std::string& ou
     std::ifstream archive(archive_name, std::ios::binary);
     assert(archive.good());
 
+    bool extract_all = (std::find(files.begin(), files.end(), std::string("all")) != files.end());
+    
     FileReader reader;
     FileWriter writer;
 
     Bitset special;
     CodeTable code_table;
 
-    std::cout << "READ CODE TABLE " << std::endl;
     reader.read_code_table(archive, code_table, special);
     
     DecodeTable decode_table;
@@ -166,7 +161,6 @@ bool Archiver::decompress(const std::string& archive_name, const std::string& ou
     int num_files;
     reader.read_bytes(num_files, archive);
 
-    std::cout << "num files: " << num_files << std::endl;
 
     int sum_file_sizes = 0;
     std::vector<std::string> files_in_archive;
@@ -175,9 +169,7 @@ bool Archiver::decompress(const std::string& archive_name, const std::string& ou
         std::cout << "START FILE " << i << std::endl;
         int strlen=0;
         reader.read_bytes(strlen, archive);
-        utils::print_bits(strlen);
-        std::cout << "strlen " << strlen << std::endl;
-        std::cout << "special " << (std::string) special << std::endl;
+
         //assert(i<1);
         std::string filename;
         reader.read_string(filename, strlen, archive);
@@ -188,18 +180,15 @@ bool Archiver::decompress(const std::string& archive_name, const std::string& ou
         
         std::string filepath = out_dir + "/" + filename;
         bool file_requested = (std::find(files.begin(), files.end(), filename) != std::end(files));
-        std::cout << "Is requested: " << file_requested << std::endl;
         std::filesystem::path p(filepath);
         std::ofstream of;
-        if(file_requested){
+        if(file_requested || extract_all){
             
             std::cout << "Creating dir: " << p.parent_path() << std::endl;
             if(!std::filesystem::exists(p.parent_path())) std::filesystem::create_directories(p.parent_path());
             of.open(filepath);
             assert(of.good());                
         } 
-
-        std::cout << "FILEPATH " << filepath << std::endl;
 
         std::vector<byte> bytes;
         bool success = true;
@@ -214,6 +203,7 @@ bool Archiver::decompress(const std::string& archive_name, const std::string& ou
 
         std::cout << "file ready \n";
     }
+
     if(get_info){
             
         unsigned long long arch_size = std::filesystem::file_size(archive_name);
@@ -289,16 +279,13 @@ void Archiver::modify_archived_file(const std::string& archive_filepath, const s
         int strlen = 0;
         std::string filename;
 
-        std::cout << "start of loop " << std::endl;
         reader.read_bytes(strlen, archive);
-        std::cout << "Read strlen " << strlen << std::endl;
         reader.read_string(filename, strlen, archive);
 
-        std::cout << "Read strlen " << strlen << "  " << filename << " Old filename is " << old_filename << std::endl;
-        std::cout << "Equal " << (filename == old_filename) << std::endl;
         std::vector<byte> file_bytes;
         reader.read_and_decode(archive, file_bytes, decode_table, special);
 
+        std::cout << " curr name " << old_filename << " target name " << modified_filepath << " curr_name " << filename << std::endl; 
         if(filename == old_filename){
             std::cout << "Found old filename " << std::endl;
             continue;
@@ -320,8 +307,11 @@ void Archiver::modify_archived_file(const std::string& archive_filepath, const s
     writer.write_bytes(temp_arch, (int)old_filename.size());
     writer.write_string(temp_arch, old_filename);
     new_file_encoded += updated_special;
+    std::cout << " new file encoded " << (std::string) new_file_encoded << std::endl;
     writer.append_archive(temp_arch, new_file_encoded);
     writer.write_byte_remainder(temp_arch, new_file_encoded);
+    
+    std::filesystem::rename("temp", archive_filepath);
     
 
 

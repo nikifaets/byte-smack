@@ -4,7 +4,10 @@
 #include "HTree.h"
 #include <assert.h>
 
-
+/*
+    Класът Encoder служи като интерфейс между класовете от по-високо ниво, като Archiver например, и логиката около Хъфман кодирането.
+    Предоставя функционалност за съставяне на таблица с кодове, таблица за декодиране, осигурява връзката със самите дървета на Хъфман и др.
+*/
 void Encoder::set_code_table(CodeTable code_table){
 
     this->code_table = code_table;
@@ -74,10 +77,7 @@ void Encoder::decode_table_from_code_table(DecodeTable& decode_table, CodeTable&
     
         int count = decode_table.count(it->second);
         if(count > 0){
-            std::cout << "DUPLICATE with " << it->first << " and " << decode_table[it->second] << std::endl;
             BitsetHash bh;
-            std::cout << (std::string) it->second << " " << (std::string) code_table[decode_table[it->second]] << std::endl;
-            std::cout << bh(it->second) << std::endl;
         }
 
         decode_table[it->second] = it->first;
