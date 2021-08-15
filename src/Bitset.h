@@ -7,6 +7,10 @@
 const int LL_BITS = 64;
 typedef unsigned char byte;
 
+/*
+    Клас, представляващ референция към позиция (бит) в Bitset. Идеята е вдъхновена от std::bitset::reference. 
+    Използва се, за да позволява четене и писане в Bitset последством оператор [], използвайки индексация по индекс на бит. 
+*/
 class BitReference{
 
     friend class Bitset;
@@ -53,13 +57,13 @@ class Bitset{
     void clear_head(const int len);
     operator std::string() const;
     operator byte() const;
-    Bitset& operator+ (Bitset& o);
-    Bitset& operator= (Bitset& o);
-    Bitset& operator+= (Bitset& o);
+    Bitset& operator+ (const Bitset& o);
+    Bitset& operator= (const Bitset& o);
+    Bitset& operator+= (const Bitset& o);
 
-    BitReference operator [] (int idx);
-    bool operator== (Bitset& o) const;
-    int size();
+    BitReference operator [] (const int idx);
+    bool operator == (Bitset& o) const;
+    int size() const;
     const std::vector<unsigned long long>& longs() const;
     void clear();
 

@@ -11,7 +11,7 @@ class FileWriter{
     public:
 
     template<typename T> 
-    void write_bytes(const T& val, std::ofstream& f){
+    void write_bytes(std::ofstream& f, const T& val){
         
         assert(f.good());
         int num_bytes = sizeof(val);
@@ -34,4 +34,5 @@ class FileWriter{
     void write_code_table(std::ofstream& archive, CodeTable& code_table, Bitset& special);
     void append_bytes(std::ofstream& f, std::vector<byte>& bytes);
     void append_bytes_text(std::ofstream& f, std::vector<byte>& bytes);
+    void write_byte_remainder(std::ofstream& f, const Bitset& encoded);
 };

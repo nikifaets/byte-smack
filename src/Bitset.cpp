@@ -68,9 +68,6 @@ void Bitset::reserve(int len){
 
         bits.push_back(0);
     }
-
-
-
 }
 
 void Bitset::clear(){
@@ -115,7 +112,7 @@ Bitset::operator byte() const{
     return  bits[0] >> 56;
 }
 
-Bitset& Bitset::operator = (Bitset& o){
+Bitset& Bitset::operator = (const Bitset& o){
 
     this->bits = o.bits;
     this->next_free_bit = o.next_free_bit;
@@ -128,7 +125,7 @@ const std::vector<unsigned long long>& Bitset::longs() const {
     return bits;
 }
 
-Bitset& Bitset::operator + (Bitset& o){
+Bitset& Bitset::operator + (const Bitset& o){
 
     if(next_free_bit % LL_BITS == 0){
 
@@ -161,13 +158,13 @@ Bitset& Bitset::operator + (Bitset& o){
 }
 
 
-Bitset& Bitset::operator+= (Bitset& o){
+Bitset& Bitset::operator += (const Bitset& o){
 
     *this = *this + o;
     return *this;
 }
 
-BitReference Bitset::operator[] (int idx){
+BitReference Bitset::operator[] (const int idx){
 
     assert(idx < bits.size() * LL_BITS);
 
@@ -178,7 +175,7 @@ BitReference Bitset::operator[] (int idx){
     return BitReference(bits[long_idx], bit_idx);
 }
 
-bool Bitset::operator== (Bitset& o) const{
+bool Bitset::operator == (Bitset& o) const {
 
     if(o.size() != next_free_bit) return false;
     for(int i=0; i<next_free_bit; i++){
@@ -192,7 +189,7 @@ bool Bitset::operator== (Bitset& o) const{
     return true;
 }
 
-int Bitset::size(){
+int Bitset::size() const{
 
     return next_free_bit;
 }

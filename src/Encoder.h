@@ -23,16 +23,17 @@ class Encoder{
 
     public:
 
-    void decode_table_from_code(DecodeTable& decode_table, CodeTable& code_table);
+    void decode_table_from_code_table(DecodeTable& decode_table, CodeTable& code_table);
     bool write_archive(std::string& buf, std::string& out);
     void get_freq_table(std::vector<int>& out);
     void update_freq_table(std::vector<byte>& bytes);
     void create_codes();
-    void codes(CodeTable& res) const;
+    void get_codes(CodeTable& res) const;
     void get_decode_table(DecodeTable& res) const;
-    void encode(Bitset& res, std::vector<byte> bytes);
+    void encode(const std::vector<byte>& bytes, Bitset& res) const;
     void decode(std::vector<byte>& res, Bitset& codes);
     int count_different_symbols();
     void get_special(Bitset& res);
+    void set_code_table(CodeTable code_table);
     Encoder();
 };

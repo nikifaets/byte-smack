@@ -84,7 +84,7 @@ bool FileReader::read_code(std::ifstream& archive, Bitset& res){
 
 }
 
-bool FileReader::read_and_decode(std::ifstream& archive, std::vector<byte>& res, DecodeTable& decode_table, Bitset& special, int num_bytes){
+bool FileReader::read_and_decode(std::ifstream& archive, std::vector<byte>& res, const DecodeTable& decode_table, Bitset& special, const int num_bytes){
 
     Bitset code_buf;
 
@@ -104,7 +104,7 @@ bool FileReader::read_and_decode(std::ifstream& archive, std::vector<byte>& res,
             if(count > 0){
 
                 decoded_bytes ++;
-                res.push_back(decode_table[code_buf]);
+                res.push_back(decode_table.at(code_buf));
                 code_buf.clear();
 
             }
@@ -113,6 +113,7 @@ bool FileReader::read_and_decode(std::ifstream& archive, std::vector<byte>& res,
 
                 std::cout << "READING FILE. Read special \n";
                 std::cout << "Code buf: " << (std::string) code_buf << std::endl;
+                std::cout << "Special: " << (std::string) special << std::endl;
                 for(int i=0; i<8; i++){
                     inp = 0;
                     read_bytes(inp, archive);
@@ -133,7 +134,7 @@ bool FileReader::read_and_decode(std::ifstream& archive, std::vector<byte>& res,
 
 }
 
-void FileReader::read_string(std::ifstream& f, std::string& str, int len){
+void FileReader::read_string(std::string& str, const int len, std::ifstream& f){
 
     char* arr = new char[len];
     f.read(arr, len);

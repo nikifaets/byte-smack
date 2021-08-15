@@ -11,6 +11,7 @@ class Archiver{
     public:
 
     void compress(const std::string& archive, const std::vector<std::string>& files);
-    bool decompress(const std::string& archive, const std::string& out_dir, const std::vector<std::string>& files);
-    void add_to_archive(const std::string& archive_name, const std::string& filename);
+    bool decompress(const std::string& archive, const std::string& out_dir, const std::vector<std::string>& files, bool get_info=false);
+    void modify_archived_file(const std::string& archive_filepath, const std::string& filename, const std::string& modified_filepath);
+    void print_info(const int arch_size, const int sum_files_sizes, const std::vector<std::string>& files_in_archive);
 };

@@ -4,6 +4,11 @@
 #include "HTree.h"
 #include <assert.h>
 
+
+void Encoder::set_code_table(CodeTable code_table){
+
+    this->code_table = code_table;
+}
 void Encoder::prefill_table(){
 
     for(int i=0; i<BYTES_COUNT; i++){
@@ -60,7 +65,7 @@ void Encoder::fill_decode_table(){
 
 
 }
-void Encoder::decode_table_from_code(DecodeTable& decode_table, CodeTable& code_table){
+void Encoder::decode_table_from_code_table(DecodeTable& decode_table, CodeTable& code_table){
 
     CodeTable::iterator it = code_table.begin();
 
@@ -78,7 +83,7 @@ void Encoder::decode_table_from_code(DecodeTable& decode_table, CodeTable& code_
         decode_table[it->second] = it->first;
     }
 }
-void Encoder::codes(CodeTable& res) const{
+void Encoder::get_codes(CodeTable& res) const{
 
     res = code_table;
 }
@@ -88,13 +93,14 @@ void Encoder::get_decode_table(DecodeTable& res) const{
     res = decode_table;
 }
 
-void Encoder::encode(Bitset& res, std::vector<byte> bytes){
+void Encoder::encode(const std::vector<byte>& bytes, Bitset& res) const{
 
     for(int i=0; i<bytes.size(); i++){
 
+        //utils::print_bits(bytes[i]);
         assert(code_table.count(bytes[i]) > 0);
 
-        res += code_table[bytes[i]];
+        res += code_table.at(bytes[i]);
     }
 }
 
